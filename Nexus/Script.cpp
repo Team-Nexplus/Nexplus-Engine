@@ -78,6 +78,48 @@ const char variableNames[][0x20] = {
     "Object.Value5",
     "Object.Value6",
     "Object.Value7",
+    "Object.Value8",
+    "Object.Value9",
+    "Object.Value10",
+    "Object.Value11",
+    "Object.Value12",
+    "Object.Value13",
+    "Object.Value14",
+    "Object.Value15",
+    "Object.Value16",
+    "Object.Value17",
+    "Object.Value18",
+    "Object.Value19",
+    "Object.Value20",
+    "Object.Value21",
+    "Object.Value22",
+    "Object.Value23",
+    "Object.Value24",
+    "Object.Value25",
+    "Object.Value26",
+    "Object.Value27",
+    "Object.Value28",
+    "Object.Value29",
+    "Object.Value30",
+    "Object.Value31",
+    "Object.Value32",
+    "Object.Value33",
+    "Object.Value34",
+    "Object.Value35",
+    "Object.Value36",
+    "Object.Value37",
+    "Object.Value38",
+    "Object.Value39",
+    "Object.Value40",
+    "Object.Value41",
+    "Object.Value42",
+    "Object.Value43",
+    "Object.Value44",
+    "Object.Value45",
+    "Object.Value46",
+    "Object.Value47",
+    "Object.Value48",
+    "Object.Value49",
     "TempValue0",
     "TempValue1",
     "TempValue2",
@@ -96,7 +138,13 @@ const char variableNames[][0x20] = {
     "KeyDown.ButtonA",
     "KeyDown.ButtonB",
     "KeyDown.ButtonC",
+    "KeyDown.ButtonX",
+    "KeyDown.ButtonY",
+    "KeyDown.ButtonZ",
+    "KeyDown.ButtonL",
+    "KeyDown.ButtonR",
     "KeyDown.Start",
+    "KeyDown.Select",
     "KeyPress.Up",
     "KeyPress.Down",
     "KeyPress.Left",
@@ -104,7 +152,13 @@ const char variableNames[][0x20] = {
     "KeyPress.ButtonA",
     "KeyPress.ButtonB",
     "KeyPress.ButtonC",
+    "KeyPress.ButtonX",
+    "KeyPress.ButtonY",
+    "KeyPress.ButtonZ",
+    "KeyPress.ButtonL",
+    "KeyPress.ButtonR",
     "KeyPress.Start",
+    "KeyPress.Select",
     "Menu1.Selection",
     "Menu2.Selection",
     "Stage.ActiveList",
@@ -149,6 +203,26 @@ const char variableNames[][0x20] = {
     "Player.Right",
     "Player.JumpPress",
     "Player.JumpHold",
+    "Player.TriggerPress",
+    "Player.TriggerHold",
+    "Player.BumperPress",
+    "Player.BumperHold",
+    "Player.APress",
+    "Player.AHold",
+    "Player.BPress",
+    "Player.BHold",
+    "Player.CPress",
+    "Player.CHold",
+    "Player.XPress",
+    "Player.XHold",
+    "Player.YPress",
+    "Player.YHold",
+    "Player.ZPress",
+    "Player.ZHold",
+    "Player.LPress",
+    "Player.LHold",
+    "Player.RPress",
+    "Player.RHold",
     "Player.FollowPlayer1",
     "Player.LookPos",
     "Player.Water",
@@ -336,6 +410,48 @@ enum ScrVariable {
     VAR_OBJECTVALUE5,
     VAR_OBJECTVALUE6,
     VAR_OBJECTVALUE7,
+    VAR_OBJECTVALUE8,
+    VAR_OBJECTVALUE9,
+    VAR_OBJECTVALUE10,
+    VAR_OBJECTVALUE11,
+    VAR_OBJECTVALUE12,
+    VAR_OBJECTVALUE13,
+    VAR_OBJECTVALUE14,
+    VAR_OBJECTVALUE15,
+    VAR_OBJECTVALUE16,
+    VAR_OBJECTVALUE17,
+    VAR_OBJECTVALUE18,
+    VAR_OBJECTVALUE19,
+    VAR_OBJECTVALUE20,
+    VAR_OBJECTVALUE21,
+    VAR_OBJECTVALUE22,
+    VAR_OBJECTVALUE23,
+    VAR_OBJECTVALUE24,
+    VAR_OBJECTVALUE25,
+    VAR_OBJECTVALUE26,
+    VAR_OBJECTVALUE27,
+    VAR_OBJECTVALUE28,
+    VAR_OBJECTVALUE29,
+    VAR_OBJECTVALUE30,
+    VAR_OBJECTVALUE31,
+    VAR_OBJECTVALUE32,
+    VAR_OBJECTVALUE33,
+    VAR_OBJECTVALUE34,
+    VAR_OBJECTVALUE35,
+    VAR_OBJECTVALUE36,
+    VAR_OBJECTVALUE37,
+    VAR_OBJECTVALUE38,
+    VAR_OBJECTVALUE39,
+    VAR_OBJECTVALUE40,
+    VAR_OBJECTVALUE41,
+    VAR_OBJECTVALUE42,
+    VAR_OBJECTVALUE43,
+    VAR_OBJECTVALUE44,
+    VAR_OBJECTVALUE45,
+    VAR_OBJECTVALUE46,
+    VAR_OBJECTVALUE47,
+    VAR_OBJECTVALUE48,
+    VAR_OBJECTVALUE49,
     VAR_TEMPVALUE0,
     VAR_TEMPVALUE1,
     VAR_TEMPVALUE2,
@@ -354,7 +470,13 @@ enum ScrVariable {
     VAR_KEYDOWNBUTTONA,
     VAR_KEYDOWNBUTTONB,
     VAR_KEYDOWNBUTTONC,
+    VAR_KEYDOWNBUTTONX,
+    VAR_KEYDOWNBUTTONY,
+    VAR_KEYDOWNBUTTONZ,
+    VAR_KEYDOWNBUTTONL,
+    VAR_KEYDOWNBUTTONR,
     VAR_KEYDOWNSTART,
+    VAR_KEYDOWNSELECT,
     VAR_KEYPRESSUP,
     VAR_KEYPRESSDOWN,
     VAR_KEYPRESSLEFT,
@@ -362,7 +484,13 @@ enum ScrVariable {
     VAR_KEYPRESSBUTTONA,
     VAR_KEYPRESSBUTTONB,
     VAR_KEYPRESSBUTTONC,
+    VAR_KEYPRESSBUTTONX,
+    VAR_KEYPRESSBUTTONY,
+    VAR_KEYPRESSBUTTONZ,
+    VAR_KEYPRESSBUTTONL,
+    VAR_KEYPRESSBUTTONR,
     VAR_KEYPRESSSTART,
+    VAR_KEYPRESSSELECT,
     VAR_MENU1SELECTION,
     VAR_MENU2SELECTION,
     VAR_STAGEACTIVELIST,
@@ -407,6 +535,26 @@ enum ScrVariable {
     VAR_PLAYERRIGHT,
     VAR_PLAYERJUMPPRESS,
     VAR_PLAYERJUMPHOLD,
+    VAR_PLAYERTRIGGERPRESS,
+    VAR_PLAYERTRIGGERHOLD,
+    VAR_PLAYERBUMPERPRESS,
+    VAR_PLAYERBUMPERHOLD,
+    VAR_PLAYERAPRESS,
+    VAR_PLAYERAHOLD,
+    VAR_PLAYERBPRESS,
+    VAR_PLAYERBHOLD,
+    VAR_PLAYERCPRESS,
+    VAR_PLAYERCHOLD,
+    VAR_PLAYERXPRESS,
+    VAR_PLAYERXHOLD,
+    VAR_PLAYERYPRESS,
+    VAR_PLAYERYHOLD,
+    VAR_PLAYERZPRESS,
+    VAR_PLAYERZHOLD,
+    VAR_PLAYERLPRESS,
+    VAR_PLAYERLHOLD,
+    VAR_PLAYERRPRESS,
+    VAR_PLAYERRHOLD,
     VAR_PLAYERFOLLOWPLAYER1,
     VAR_PLAYERLOOKPOS,
     VAR_PLAYERWATER,
@@ -1427,6 +1575,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         ScriptEng.operands[i] = ObjectEntityList[arrayVal].frame;
                         break;
                     }
+
                     case VAR_OBJECTVALUE0: {
                         ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[0];
                         break;
@@ -1459,6 +1608,175 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[7];
                         break;
                     }
+                    case VAR_OBJECTVALUE8: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[8];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE9: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[9];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE10: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[10];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE11: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[11];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE12: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[12];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE13: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[13];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE14: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[14];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE15: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[15];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE16: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[16];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE17: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[17];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE18: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[18];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE19: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[19];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE20: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[20];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE21: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[21];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE22: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[22];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE23: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[23];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE24: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[24];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE25: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[25];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE26: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[26];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE27: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[27];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE28: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[28];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE29: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[29];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE30: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[30];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE31: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[31];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE32: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[32];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE33: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[33];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE34: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[34];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE35: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[35];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE36: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[36];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE37: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[37];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE38: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[38];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE39: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[39];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE40: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[40];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE41: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[41];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE42: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[42];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE43: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[43];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE44: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[44];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE45: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[45];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE46: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[46];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE47: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[47];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE48: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[48];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE49: {
+                        ScriptEng.operands[i] = ObjectEntityList[arrayVal].values[49];
+                        break;
+                    }
+
                     case VAR_TEMPVALUE0: ScriptEng.operands[i] = ScriptEng.tempValue[0]; break;
                     case VAR_TEMPVALUE1: ScriptEng.operands[i] = ScriptEng.tempValue[1]; break;
                     case VAR_TEMPVALUE2: ScriptEng.operands[i] = ScriptEng.tempValue[2]; break;
@@ -1477,7 +1795,13 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_KEYDOWNBUTTONA: ScriptEng.operands[i] = GKeyDown.A; break;
                     case VAR_KEYDOWNBUTTONB: ScriptEng.operands[i] = GKeyDown.B; break;
                     case VAR_KEYDOWNBUTTONC: ScriptEng.operands[i] = GKeyDown.C; break;
+                    case VAR_KEYDOWNBUTTONX: ScriptEng.operands[i] = GKeyDown.X; break;
+                    case VAR_KEYDOWNBUTTONY: ScriptEng.operands[i] = GKeyDown.Y; break;
+                    case VAR_KEYDOWNBUTTONZ: ScriptEng.operands[i] = GKeyDown.Z; break;
+                    case VAR_KEYDOWNBUTTONL: ScriptEng.operands[i] = GKeyDown.L; break;
+                    case VAR_KEYDOWNBUTTONR: ScriptEng.operands[i] = GKeyDown.R; break;
                     case VAR_KEYDOWNSTART: ScriptEng.operands[i] = GKeyDown.start; break;
+                    case VAR_KEYDOWNSELECT: ScriptEng.operands[i] = GKeyDown.select; break;
                     case VAR_KEYPRESSUP: ScriptEng.operands[i] = GKeyPress.up; break;
                     case VAR_KEYPRESSDOWN: ScriptEng.operands[i] = GKeyPress.down; break;
                     case VAR_KEYPRESSLEFT: ScriptEng.operands[i] = GKeyPress.left; break;
@@ -1485,7 +1809,13 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_KEYPRESSBUTTONA: ScriptEng.operands[i] = GKeyPress.A; break;
                     case VAR_KEYPRESSBUTTONB: ScriptEng.operands[i] = GKeyPress.B; break;
                     case VAR_KEYPRESSBUTTONC: ScriptEng.operands[i] = GKeyPress.C; break;
+                    case VAR_KEYPRESSBUTTONX: ScriptEng.operands[i] = GKeyPress.X; break;
+                    case VAR_KEYPRESSBUTTONY: ScriptEng.operands[i] = GKeyPress.Y; break;
+                    case VAR_KEYPRESSBUTTONZ: ScriptEng.operands[i] = GKeyPress.Z; break;
+                    case VAR_KEYPRESSBUTTONL: ScriptEng.operands[i] = GKeyPress.L; break;
+                    case VAR_KEYPRESSBUTTONR: ScriptEng.operands[i] = GKeyPress.R; break;
                     case VAR_KEYPRESSSTART: ScriptEng.operands[i] = GKeyPress.start; break;
+                    case VAR_KEYPRESSSELECT: ScriptEng.operands[i] = GKeyPress.select; break;
                     case VAR_MENU1SELECTION: ScriptEng.operands[i] = GameMenu[0].selection1; break;
                     case VAR_MENU2SELECTION: ScriptEng.operands[i] = GameMenu[1].selection1; break;
                     case VAR_STAGEACTIVELIST: ScriptEng.operands[i] = ActiveStageList; break;
@@ -1599,6 +1929,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         ScriptEng.operands[i] = PlayerList[PlayerNo].right;
                         break;
                     }
+
                     case VAR_PLAYERJUMPPRESS: {
                         ScriptEng.operands[i] = PlayerList[PlayerNo].jumpPress;
                         break;
@@ -1607,6 +1938,87 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         ScriptEng.operands[i] = PlayerList[PlayerNo].jumpHold;
                         break;
                     }
+                    case VAR_PLAYERTRIGGERPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].triggerPress;
+                        break;
+                    }
+                    case VAR_PLAYERTRIGGERHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].triggerHold;
+                        break;
+                    }
+                    case VAR_PLAYERBUMPERPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].bumperPress;
+                        break;
+                    }
+                    case VAR_PLAYERBUMPERHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].bumperHold;
+                        break;
+                    }
+                    case VAR_PLAYERAPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].aPress;
+                        break;
+                    }
+                    case VAR_PLAYERAHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].aHold;
+                        break;
+                    }
+                    case VAR_PLAYERBPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].bPress;
+                        break;
+                    }
+                    case VAR_PLAYERBHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].bHold;
+                        break;
+                    }
+                    case VAR_PLAYERCPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].cPress;
+                        break;
+                    }
+                    case VAR_PLAYERCHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].cHold;
+                        break;
+                    }
+                    case VAR_PLAYERXPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].xPress;
+                        break;
+                    }
+                    case VAR_PLAYERXHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].xHold;
+                        break;
+                    }
+                    case VAR_PLAYERYPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].yPress;
+                        break;
+                    }
+                    case VAR_PLAYERYHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].yHold;
+                        break;
+                    }
+                    case VAR_PLAYERZPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].zPress;
+                        break;
+                    }
+                    case VAR_PLAYERZHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].zHold;
+                        break;
+                    }
+                    case VAR_PLAYERLPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].lPress;
+                        break;
+                    }
+                    case VAR_PLAYERLHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].lHold;
+                        break;
+                    }
+                    case VAR_PLAYERRPRESS: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].rPress;
+                        break;
+                    }
+                    case VAR_PLAYERRHOLD: {
+                        ScriptEng.operands[i] = PlayerList[PlayerNo].rHold;
+                        break;
+                    }
+
                     case VAR_PLAYERFOLLOWPLAYER1: {
                         ScriptEng.operands[i] = PlayerList[PlayerNo].followPlayer1;
                         break;
@@ -2329,6 +2741,48 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 newEnt->values[5]     = 0;
                 newEnt->values[6]     = 0;
                 newEnt->values[7]     = 0;
+                newEnt->values[8]     = 0;
+                newEnt->values[9]     = 0;
+                newEnt->values[10]    = 0;
+                newEnt->values[11]    = 0;
+                newEnt->values[12]    = 0;
+                newEnt->values[13]    = 0;
+                newEnt->values[14]    = 0;
+                newEnt->values[15]    = 0;
+                newEnt->values[16]    = 0;
+                newEnt->values[17]    = 0;
+                newEnt->values[18]    = 0;
+                newEnt->values[19]    = 0;
+                newEnt->values[20]    = 0;
+                newEnt->values[21]    = 0;
+                newEnt->values[22]    = 0;
+                newEnt->values[23]    = 0;
+                newEnt->values[24]    = 0;
+                newEnt->values[25]    = 0;
+                newEnt->values[26]    = 0;
+                newEnt->values[27]    = 0;
+                newEnt->values[28]    = 0;
+                newEnt->values[29]    = 0;
+                newEnt->values[30]    = 0;
+                newEnt->values[31]    = 0;
+                newEnt->values[32]    = 0;
+                newEnt->values[33]    = 0;
+                newEnt->values[34]    = 0;
+                newEnt->values[35]    = 0;
+                newEnt->values[36]    = 0;
+                newEnt->values[37]    = 0;
+                newEnt->values[38]    = 0;
+                newEnt->values[39]    = 0;
+                newEnt->values[40]    = 0;
+                newEnt->values[41]    = 0;
+                newEnt->values[42]    = 0;
+                newEnt->values[43]    = 0;
+                newEnt->values[44]    = 0;
+                newEnt->values[45]    = 0;
+                newEnt->values[46]    = 0;
+                newEnt->values[47]    = 0;
+                newEnt->values[48]    = 0;
+                newEnt->values[49]    = 0;
                 break;
             }
             case FUNC_PLAYEROBJECTCOLLISION:
@@ -2376,6 +2830,48 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 temp->values[5]     = 0;
                 temp->values[6]     = 0;
                 temp->values[7]     = 0;
+                temp->values[8]     = 0;
+                temp->values[9]     = 0;
+                temp->values[10]    = 0;
+                temp->values[11]    = 0;
+                temp->values[12]    = 0;
+                temp->values[13]    = 0;
+                temp->values[14]    = 0;
+                temp->values[15]    = 0;
+                temp->values[16]    = 0;
+                temp->values[17]    = 0;
+                temp->values[18]    = 0;
+                temp->values[19]    = 0;
+                temp->values[20]    = 0;
+                temp->values[21]    = 0;
+                temp->values[22]    = 0;
+                temp->values[23]    = 0;
+                temp->values[24]    = 0;
+                temp->values[25]    = 0;
+                temp->values[26]    = 0;
+                temp->values[27]    = 0;
+                temp->values[28]    = 0;
+                temp->values[29]    = 0;
+                temp->values[30]    = 0;
+                temp->values[31]    = 0;
+                temp->values[32]    = 0;
+                temp->values[33]    = 0;
+                temp->values[34]    = 0;
+                temp->values[35]    = 0;
+                temp->values[36]    = 0;
+                temp->values[37]    = 0;
+                temp->values[38]    = 0;
+                temp->values[39]    = 0;
+                temp->values[40]    = 0;
+                temp->values[41]    = 0;
+                temp->values[42]    = 0;
+                temp->values[43]    = 0;
+                temp->values[44]    = 0;
+                temp->values[45]    = 0;
+                temp->values[46]    = 0;
+                temp->values[47]    = 0;
+                temp->values[48]    = 0;
+                temp->values[49]    = 0;
                 break;
             }
             case FUNC_DEFAULTGROUNDMOVEMENT:
@@ -2545,38 +3041,208 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         ObjectEntityList[arrayVal].frame = ScriptEng.operands[i];
                         break;
                     }
+
                     case VAR_OBJECTVALUE0: {
-                        ObjectEntityList[arrayVal].values[0] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[0]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE1: {
-                        ObjectEntityList[arrayVal].values[1] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[1]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE2: {
-                        ObjectEntityList[arrayVal].values[2] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[2]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE3: {
-                        ObjectEntityList[arrayVal].values[3] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[3]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE4: {
-                        ObjectEntityList[arrayVal].values[4] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[4]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE5: {
-                        ObjectEntityList[arrayVal].values[5] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[5]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE6: {
-                        ObjectEntityList[arrayVal].values[6] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[6]  = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE7: {
-                        ObjectEntityList[arrayVal].values[7] = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[7]  = ScriptEng.operands[i];
                         break;
                     }
+                    case VAR_OBJECTVALUE8: {
+                        ObjectEntityList[arrayVal].values[8]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE9: {
+                        ObjectEntityList[arrayVal].values[9]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE10: {
+                        ObjectEntityList[arrayVal].values[10]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE11: {
+                        ObjectEntityList[arrayVal].values[11]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE12: {
+                        ObjectEntityList[arrayVal].values[12]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE13: {
+                        ObjectEntityList[arrayVal].values[13]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE14: {
+                        ObjectEntityList[arrayVal].values[14]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE15: {
+                        ObjectEntityList[arrayVal].values[15]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE16: {
+                        ObjectEntityList[arrayVal].values[16]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE17: {
+                        ObjectEntityList[arrayVal].values[17]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE18: {
+                        ObjectEntityList[arrayVal].values[18]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE19: {
+                        ObjectEntityList[arrayVal].values[19]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE20: {
+                        ObjectEntityList[arrayVal].values[20]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE21: {
+                        ObjectEntityList[arrayVal].values[21]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE22: {
+                        ObjectEntityList[arrayVal].values[22]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE23: {
+                        ObjectEntityList[arrayVal].values[23]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE24: {
+                        ObjectEntityList[arrayVal].values[24]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE25: {
+                        ObjectEntityList[arrayVal].values[25]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE26: {
+                        ObjectEntityList[arrayVal].values[26]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE27: {
+                        ObjectEntityList[arrayVal].values[27]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE28: {
+                        ObjectEntityList[arrayVal].values[28]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE29: {
+                        ObjectEntityList[arrayVal].values[29]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE30: {
+                        ObjectEntityList[arrayVal].values[30]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE31: {
+                        ObjectEntityList[arrayVal].values[31]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE32: {
+                        ObjectEntityList[arrayVal].values[32]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE33: {
+                        ObjectEntityList[arrayVal].values[33]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE34: {
+                        ObjectEntityList[arrayVal].values[34]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE35: {
+                        ObjectEntityList[arrayVal].values[35]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE36: {
+                        ObjectEntityList[arrayVal].values[36]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE37: {
+                        ObjectEntityList[arrayVal].values[37]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE38: {
+                        ObjectEntityList[arrayVal].values[38]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE39: {
+                        ObjectEntityList[arrayVal].values[39]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE40: {
+                        ObjectEntityList[arrayVal].values[40]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE41: {
+                        ObjectEntityList[arrayVal].values[41]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE42: {
+                        ObjectEntityList[arrayVal].values[42]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE43: {
+                        ObjectEntityList[arrayVal].values[43]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE44: {
+                        ObjectEntityList[arrayVal].values[44]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE45: {
+                        ObjectEntityList[arrayVal].values[45]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE46: {
+                        ObjectEntityList[arrayVal].values[46]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE47: {
+                        ObjectEntityList[arrayVal].values[47]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE48: {
+                        ObjectEntityList[arrayVal].values[48]  = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_OBJECTVALUE49: {
+                        ObjectEntityList[arrayVal].values[49]  = ScriptEng.operands[i];
+                        break;
+                    }
+
                     case VAR_TEMPVALUE0: ScriptEng.tempValue[0] = ScriptEng.operands[i]; break;
                     case VAR_TEMPVALUE1: ScriptEng.tempValue[1] = ScriptEng.operands[i]; break;
                     case VAR_TEMPVALUE2: ScriptEng.tempValue[2] = ScriptEng.operands[i]; break;
@@ -2595,7 +3261,13 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_KEYDOWNBUTTONA: GKeyDown.A = ScriptEng.operands[i]; break;
                     case VAR_KEYDOWNBUTTONB: GKeyDown.B = ScriptEng.operands[i]; break;
                     case VAR_KEYDOWNBUTTONC: GKeyDown.C = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBUTTONX: GKeyDown.X = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBUTTONY: GKeyDown.Y = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBUTTONZ: GKeyDown.Z = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBUTTONL: GKeyDown.L = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNBUTTONR: GKeyDown.R = ScriptEng.operands[i]; break;
                     case VAR_KEYDOWNSTART: GKeyDown.start = ScriptEng.operands[i]; break;
+                    case VAR_KEYDOWNSELECT: GKeyDown.select = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSUP: GKeyPress.up = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSDOWN: GKeyPress.down = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSLEFT: GKeyPress.left = ScriptEng.operands[i]; break;
@@ -2603,7 +3275,13 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_KEYPRESSBUTTONA: GKeyPress.A = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSBUTTONB: GKeyPress.B = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSBUTTONC: GKeyPress.C = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONX: GKeyPress.A = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONY: GKeyPress.B = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONZ: GKeyPress.C = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONL: GKeyPress.A = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONR: GKeyPress.B = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSSTART: GKeyPress.start = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSSELECT: GKeyPress.select = ScriptEng.operands[i]; break;
                     case VAR_MENU1SELECTION: GameMenu[0].selection1 = ScriptEng.operands[i]; break;
                     case VAR_MENU2SELECTION: GameMenu[1].selection1 = ScriptEng.operands[i]; break;
                     case VAR_STAGEACTIVELIST: ActiveStageList = ScriptEng.operands[i]; break;
@@ -2733,6 +3411,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         PlayerList[PlayerNo].right = ScriptEng.operands[i];
                         break;
                     }
+
                     case VAR_PLAYERJUMPPRESS: {
                         PlayerList[PlayerNo].jumpPress = ScriptEng.operands[i];
                         break;
@@ -2741,6 +3420,87 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         PlayerList[PlayerNo].jumpHold = ScriptEng.operands[i];
                         break;
                     }
+                    case VAR_PLAYERTRIGGERPRESS: {
+                        PlayerList[PlayerNo].triggerPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERTRIGGERHOLD: {
+                        PlayerList[PlayerNo].triggerHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERBUMPERPRESS: {
+                        PlayerList[PlayerNo].bumperPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERBUMPERHOLD: {
+                        PlayerList[PlayerNo].bumperHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERAPRESS: {
+                        PlayerList[PlayerNo].aPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERAHOLD: {
+                        PlayerList[PlayerNo].aHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERBPRESS: {
+                        PlayerList[PlayerNo].bPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERBHOLD: {
+                        PlayerList[PlayerNo].bHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERCPRESS: {
+                        PlayerList[PlayerNo].cPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERCHOLD: {
+                        PlayerList[PlayerNo].cHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERXPRESS: {
+                        PlayerList[PlayerNo].xPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERXHOLD: {
+                        PlayerList[PlayerNo].xHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERYPRESS: {
+                        PlayerList[PlayerNo].yPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERYHOLD: {
+                        PlayerList[PlayerNo].yHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERZPRESS: {
+                        PlayerList[PlayerNo].zPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERZHOLD: {
+                        PlayerList[PlayerNo].zHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERLPRESS: {
+                        PlayerList[PlayerNo].lPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERLHOLD: {
+                        PlayerList[PlayerNo].lHold = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERRPRESS: {
+                        PlayerList[PlayerNo].rPress = ScriptEng.operands[i];
+                        break;
+                    }
+                    case VAR_PLAYERRHOLD: {
+                        PlayerList[PlayerNo].rHold = ScriptEng.operands[i];
+                        break;
+                    }
+
                     case VAR_PLAYERFOLLOWPLAYER1: {
                         PlayerList[PlayerNo].followPlayer1 = ScriptEng.operands[i];
                         break;

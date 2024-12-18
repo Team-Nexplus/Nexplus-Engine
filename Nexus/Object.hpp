@@ -8,7 +8,7 @@
 struct Entity {
     int XPos;
     int YPos;
-    int values[8];
+    int values[50];
     int scale;
     int rotation;
     byte type;

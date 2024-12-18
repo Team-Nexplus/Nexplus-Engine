@@ -60,17 +60,46 @@ void InitUserdata()
         ini.SetInteger("Keyboard 1", "A", inputDevice[INPUT_BUTTONA].keyMappings = SDL_SCANCODE_A);
         ini.SetInteger("Keyboard 1", "B", inputDevice[INPUT_BUTTONB].keyMappings = SDL_SCANCODE_S);
         ini.SetInteger("Keyboard 1", "C", inputDevice[INPUT_BUTTONC].keyMappings = SDL_SCANCODE_D);
+        ini.SetInteger("Keyboard 1", "X", inputDevice[INPUT_BUTTONX].keyMappings = SDL_SCANCODE_Q);
+        ini.SetInteger("Keyboard 1", "Y", inputDevice[INPUT_BUTTONY].keyMappings = SDL_SCANCODE_W);
+        ini.SetInteger("Keyboard 1", "Z", inputDevice[INPUT_BUTTONZ].keyMappings = SDL_SCANCODE_E);
+        ini.SetInteger("Keyboard 1", "L", inputDevice[INPUT_BUTTONL].keyMappings = SDL_SCANCODE_1);
+        ini.SetInteger("Keyboard 1", "R", inputDevice[INPUT_BUTTONR].keyMappings = SDL_SCANCODE_3);
         ini.SetInteger("Keyboard 1", "Start", inputDevice[INPUT_START].keyMappings = SDL_SCANCODE_RETURN);
+        ini.SetInteger("Keyboard 1", "Select", inputDevice[INPUT_SELECT].keyMappings = SDL_SCANCODE_RSHIFT);
+
+//        ini.SetComment("Keyboard 2", "IK2Comment", "Keyboard Mappings for P2 (Based on: https://wiki.libsdl.org/SDL_Scancode)");
+//        ini.SetInteger("Keyboard 2", "Up", inputDevice[INPUT_UP].keyMappings = SDL_SCANCODE_UP);
+//        ini.SetInteger("Keyboard 2", "Down", inputDevice[INPUT_DOWN].keyMappings = SDL_SCANCODE_DOWN);
+//        ini.SetInteger("Keyboard 2", "Left", inputDevice[INPUT_LEFT].keyMappings = SDL_SCANCODE_LEFT);
+//        ini.SetInteger("Keyboard 2", "Right", inputDevice[INPUT_RIGHT].keyMappings = SDL_SCANCODE_RIGHT);
+//        ini.SetInteger("Keyboard 2", "A", inputDevice[INPUT_BUTTONA].keyMappings = SDL_SCANCODE_A);
+//        ini.SetInteger("Keyboard 2", "B", inputDevice[INPUT_BUTTONB].keyMappings = SDL_SCANCODE_S);
+//        ini.SetInteger("Keyboard 2", "C", inputDevice[INPUT_BUTTONC].keyMappings = SDL_SCANCODE_D);
+//        ini.SetInteger("Keyboard 2", "X", inputDevice[INPUT_BUTTONX].keyMappings = SDL_SCANCODE_Q);
+//        ini.SetInteger("Keyboard 2", "Y", inputDevice[INPUT_BUTTONY].keyMappings = SDL_SCANCODE_W);
+//        ini.SetInteger("Keyboard 2", "Z", inputDevice[INPUT_BUTTONZ].keyMappings = SDL_SCANCODE_E);
+//        ini.SetInteger("Keyboard 2", "L", inputDevice[INPUT_BUTTONL].keyMappings = SDL_SCANCODE_1);
+//        ini.SetInteger("Keyboard 2", "R", inputDevice[INPUT_BUTTONR].keyMappings = SDL_SCANCODE_3);
+//        ini.SetInteger("Keyboard 2", "Start", inputDevice[INPUT_START].keyMappings = SDL_SCANCODE_RETURN);
+//        ini.SetInteger("Keyboard 2", "Select", inputDevice[INPUT_SELECT].keyMappings = SDL_SCANCODE_RSHIFT);
+
 
         ini.SetComment("Controller 1", "IC1Comment", "Controller Mappings for P1 (Based on: https://wiki.libsdl.org/SDL_GameControllerButton)");
         ini.SetInteger("Controller 1", "Up", inputDevice[INPUT_UP].contMappings = SDL_CONTROLLER_BUTTON_DPAD_UP);
         ini.SetInteger("Controller 1", "Down", inputDevice[INPUT_DOWN].contMappings = SDL_CONTROLLER_BUTTON_DPAD_DOWN);
         ini.SetInteger("Controller 1", "Left", inputDevice[INPUT_LEFT].contMappings = SDL_CONTROLLER_BUTTON_DPAD_LEFT);
         ini.SetInteger("Controller 1", "Right", inputDevice[INPUT_RIGHT].contMappings = SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-        ini.SetInteger("Controller 1", "A", inputDevice[INPUT_BUTTONA].contMappings = SDL_CONTROLLER_BUTTON_A);
-        ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings = SDL_CONTROLLER_BUTTON_B);
-        ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings = SDL_CONTROLLER_BUTTON_X);
+        ini.SetInteger("Controller 1", "A", inputDevice[INPUT_BUTTONA].contMappings = SDL_CONTROLLER_BUTTON_X);
+        ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings = SDL_CONTROLLER_BUTTON_A);
+        ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings = SDL_CONTROLLER_BUTTON_B);
+        ini.SetInteger("Controller 1", "X", inputDevice[INPUT_BUTTONX].contMappings = SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+        ini.SetInteger("Controller 1", "Y", inputDevice[INPUT_BUTTONY].contMappings = SDL_CONTROLLER_BUTTON_Y);
+        ini.SetInteger("Controller 1", "Z", inputDevice[INPUT_BUTTONZ].contMappings = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+        ini.SetInteger("Controller 1", "L", inputDevice[INPUT_BUTTONL].contMappings = SDL_CONTROLLER_BUTTON_ZL);
+        ini.SetInteger("Controller 1", "R", inputDevice[INPUT_BUTTONR].contMappings = SDL_CONTROLLER_BUTTON_ZR);
         ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings = SDL_CONTROLLER_BUTTON_START);
+        ini.SetInteger("Controller 1", "Select", inputDevice[INPUT_SELECT].contMappings = SDL_CONTROLLER_BUTTON_BACK);
 #endif
 
 #if RETRO_USING_SDL1
@@ -82,7 +111,13 @@ void InitUserdata()
         ini.SetInteger("Keyboard 1", "A", inputDevice[INPUT_BUTTONA].keyMappings = SDLK_a);
         ini.SetInteger("Keyboard 1", "B", inputDevice[INPUT_BUTTONB].keyMappings = SDLK_s);
         ini.SetInteger("Keyboard 1", "C", inputDevice[INPUT_BUTTONC].keyMappings = SDLK_d);
+        ini.SetInteger("Keyboard 1", "X", inputDevice[INPUT_BUTTONX].keyMappings = SDLK_q);
+        ini.SetInteger("Keyboard 1", "Y", inputDevice[INPUT_BUTTONY].keyMappings = SDLK_w);
+        ini.SetInteger("Keyboard 1", "Z", inputDevice[INPUT_BUTTONZ].keyMappings = SDLK_e);
+        ini.SetInteger("Keyboard 1", "L", inputDevice[INPUT_BUTTONL].keyMappings = SDLK_1);
+        ini.SetInteger("Keyboard 1", "R", inputDevice[INPUT_BUTTONR].keyMappings = SDLK_3);
         ini.SetInteger("Keyboard 1", "Start", inputDevice[INPUT_START].keyMappings = SDLK_RETURN);
+        ini.SetInteger("Keyboard 1", "Select", inputDevice[INPUT_SELECT].keyMappings = SDLK_RSHIFT);
 
         ini.SetComment("Controller 1", "IC1Comment", "Controller Mappings for P1 (Based on: https://wiki.libsdl.org/SDL_GameControllerButton)");
         ini.SetInteger("Controller 1", "Up", inputDevice[INPUT_UP].contMappings = 1);
@@ -92,7 +127,13 @@ void InitUserdata()
         ini.SetInteger("Controller 1", "A", inputDevice[INPUT_BUTTONA].contMappings = 5);
         ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings = 6);
         ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings = 7);
-        ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings = 8);
+        ini.SetInteger("Controller 1", "X", inputDevice[INPUT_BUTTONX].contMappings = 8);
+        ini.SetInteger("Controller 1", "Y", inputDevice[INPUT_BUTTONY].contMappings = 9);
+        ini.SetInteger("Controller 1", "Z", inputDevice[INPUT_BUTTONZ].contMappings = 10);
+        ini.SetInteger("Controller 1", "L", inputDevice[INPUT_BUTTONL].contMappings = 11);
+        ini.SetInteger("Controller 1", "R", inputDevice[INPUT_BUTTONR].contMappings = 12);
+        ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings = 13);
+        ini.SetInteger("Controller 1", "Select", inputDevice[INPUT_SELECT].contMappings = 14);
 #endif
 
         ini.Write(BASE_PATH"settings.ini");
@@ -171,8 +212,20 @@ void InitUserdata()
             inputDevice[5].keyMappings = SDL_SCANCODE_S;
         if (!ini.GetInteger("Keyboard 1", "C", &inputDevice[INPUT_BUTTONC].keyMappings))
             inputDevice[6].keyMappings = SDL_SCANCODE_D;
+        if (!ini.GetInteger("Keyboard 1", "X", &inputDevice[INPUT_BUTTONX].keyMappings))
+            inputDevice[7].keyMappings = SDL_SCANCODE_Q;
+        if (!ini.GetInteger("Keyboard 1", "Y", &inputDevice[INPUT_BUTTONY].keyMappings))
+            inputDevice[8].keyMappings = SDL_SCANCODE_W;
+        if (!ini.GetInteger("Keyboard 1", "Z", &inputDevice[INPUT_BUTTONZ].keyMappings))
+            inputDevice[9].keyMappings = SDL_SCANCODE_E;
+        if (!ini.GetInteger("Keyboard 1", "L", &inputDevice[INPUT_BUTTONL].keyMappings))
+            inputDevice[10].keyMappings = SDL_SCANCODE_L;
+        if (!ini.GetInteger("Keyboard 1", "R", &inputDevice[INPUT_BUTTONR].keyMappings))
+            inputDevice[11].keyMappings = SDL_SCANCODE_R;
         if (!ini.GetInteger("Keyboard 1", "Start", &inputDevice[INPUT_START].keyMappings))
-            inputDevice[7].keyMappings = SDL_SCANCODE_RETURN;
+            inputDevice[12].keyMappings = SDL_SCANCODE_RETURN;
+        if (!ini.GetInteger("Keyboard 1", "Start", &inputDevice[INPUT_SELECT].keyMappings))
+            inputDevice[13].keyMappings = SDL_SCANCODE_RSHIFT;
 
         if (!ini.GetInteger("Controller 1", "Up", &inputDevice[INPUT_UP].contMappings))
             inputDevice[0].contMappings = SDL_CONTROLLER_BUTTON_DPAD_UP;
@@ -183,13 +236,25 @@ void InitUserdata()
         if (!ini.GetInteger("Controller 1", "Right", &inputDevice[INPUT_RIGHT].contMappings))
             inputDevice[3].contMappings = SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
         if (!ini.GetInteger("Controller 1", "A", &inputDevice[INPUT_BUTTONA].contMappings))
-            inputDevice[4].contMappings = SDL_CONTROLLER_BUTTON_A;
+            inputDevice[4].contMappings = SDL_CONTROLLER_BUTTON_X;
         if (!ini.GetInteger("Controller 1", "B", &inputDevice[INPUT_BUTTONB].contMappings))
-            inputDevice[5].contMappings = SDL_CONTROLLER_BUTTON_B;
+            inputDevice[5].contMappings = SDL_CONTROLLER_BUTTON_A;
         if (!ini.GetInteger("Controller 1", "C", &inputDevice[INPUT_BUTTONC].contMappings))
-            inputDevice[6].contMappings = SDL_CONTROLLER_BUTTON_X;
+            inputDevice[6].contMappings = SDL_CONTROLLER_BUTTON_B;
+        if (!ini.GetInteger("Controller 1", "X", &inputDevice[INPUT_BUTTONX].contMappings))
+            inputDevice[7].contMappings = SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+        if (!ini.GetInteger("Controller 1", "Y", &inputDevice[INPUT_BUTTONY].contMappings))
+            inputDevice[8].contMappings = SDL_CONTROLLER_BUTTON_Y;
+        if (!ini.GetInteger("Controller 1", "Z", &inputDevice[INPUT_BUTTONZ].contMappings))
+            inputDevice[9].contMappings = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+        if (!ini.GetInteger("Controller 1", "L", &inputDevice[INPUT_BUTTONL].contMappings))
+            inputDevice[10].contMappings = SDL_CONTROLLER_BUTTON_ZL;
+        if (!ini.GetInteger("Controller 1", "R", &inputDevice[INPUT_BUTTONR].contMappings))
+            inputDevice[11].contMappings = SDL_CONTROLLER_BUTTON_ZR;
         if (!ini.GetInteger("Controller 1", "Start", &inputDevice[INPUT_START].contMappings))
-            inputDevice[7].contMappings = SDL_CONTROLLER_BUTTON_START;
+            inputDevice[12].contMappings = SDL_CONTROLLER_BUTTON_START;
+        if (!ini.GetInteger("Controller 1", "Select", &inputDevice[INPUT_SELECT].contMappings))
+            inputDevice[13].contMappings = SDL_CONTROLLER_BUTTON_BACK;
 #endif
 
 #if RETRO_USING_SDL1
@@ -207,8 +272,20 @@ void InitUserdata()
             inputDevice[5].keyMappings = SDLK_s;
         if (!ini.GetInteger("Keyboard 1", "C", &inputDevice[INPUT_BUTTONC].keyMappings))
             inputDevice[6].keyMappings = SDLK_d;
+        if (!ini.GetInteger("Keyboard 1", "X", &inputDevice[INPUT_BUTTONX].keyMappings))
+            inputDevice[7].keyMappings = SDLK_q;
+        if (!ini.GetInteger("Keyboard 1", "Y", &inputDevice[INPUT_BUTTONY].keyMappings))
+            inputDevice[8].keyMappings = SDLK_w;
+        if (!ini.GetInteger("Keyboard 1", "Z", &inputDevice[INPUT_BUTTONZ].keyMappings))
+            inputDevice[9].keyMappings = SDLK_e;
+        if (!ini.GetInteger("Keyboard 1", "L", &inputDevice[INPUT_BUTTONL].keyMappings))
+            inputDevice[10].keyMappings = SDLK_1;
+        if (!ini.GetInteger("Keyboard 1", "R", &inputDevice[INPUT_BUTTONR].keyMappings))
+            inputDevice[11].keyMappings = SDLK_3;
         if (!ini.GetInteger("Keyboard 1", "Start", &inputDevice[INPUT_START].keyMappings))
-            inputDevice[7].keyMappings = SDLK_RETURN;
+            inputDevice[12].keyMappings = SDLK_RETURN;
+        if (!ini.GetInteger("Keyboard 1", "Select", &inputDevice[INPUT_SELECT].keyMappings))
+            inputDevice[13].keyMappings = SDLK_RSHIFT;
 
         if (!ini.GetInteger("Controller 1", "Up", &inputDevice[INPUT_UP].contMappings))
             inputDevice[0].contMappings = 1;
@@ -224,8 +301,20 @@ void InitUserdata()
             inputDevice[5].contMappings = 6;
         if (!ini.GetInteger("Controller 1", "C", &inputDevice[INPUT_BUTTONC].contMappings))
             inputDevice[6].contMappings = 7;
-        if (!ini.GetInteger("Controller 1", "Start", &inputDevice[INPUT_START].contMappings))
+        if (!ini.GetInteger("Controller 1", "X", &inputDevice[INPUT_BUTTONX].contMappings))
             inputDevice[7].contMappings = 8;
+        if (!ini.GetInteger("Controller 1", "Y", &inputDevice[INPUT_BUTTONY].contMappings))
+            inputDevice[8].contMappings = 9;
+        if (!ini.GetInteger("Controller 1", "Z", &inputDevice[INPUT_BUTTONZ].contMappings))
+            inputDevice[9].contMappings = 10;
+        if (!ini.GetInteger("Controller 1", "L", &inputDevice[INPUT_BUTTONL].contMappings))
+            inputDevice[10].contMappings = 11;
+        if (!ini.GetInteger("Controller 1", "R", &inputDevice[INPUT_BUTTONR].contMappings))
+            inputDevice[11].contMappings = 12;
+        if (!ini.GetInteger("Controller 1", "Start", &inputDevice[INPUT_START].contMappings))
+            inputDevice[12].contMappings = 13;
+        if (!ini.GetInteger("Controller 1", "Select", &inputDevice[INPUT_SELECT].contMappings))
+            inputDevice[13].contMappings = 14;
 #endif
     }
     SetScreenSize(SCREEN_XSIZE, SCREEN_YSIZE);
@@ -306,18 +395,24 @@ void WriteSettings() {
     ini.SetInteger("Keyboard 1", "A", inputDevice[INPUT_BUTTONA].keyMappings);
     ini.SetInteger("Keyboard 1", "B", inputDevice[INPUT_BUTTONB].keyMappings);
     ini.SetInteger("Keyboard 1", "C", inputDevice[INPUT_BUTTONC].keyMappings);
+    ini.SetInteger("Keyboard 1", "X", inputDevice[INPUT_BUTTONX].keyMappings);
+    ini.SetInteger("Keyboard 1", "Y", inputDevice[INPUT_BUTTONY].keyMappings);
+    ini.SetInteger("Keyboard 1", "Z", inputDevice[INPUT_BUTTONZ].keyMappings);
+    ini.SetInteger("Keyboard 1", "L", inputDevice[INPUT_BUTTONL].keyMappings);
+    ini.SetInteger("Keyboard 1", "R", inputDevice[INPUT_BUTTONR].keyMappings);
     ini.SetInteger("Keyboard 1", "Start", inputDevice[INPUT_START].keyMappings);
+    ini.SetInteger("Keyboard 1", "Select", inputDevice[INPUT_SELECT].keyMappings);
 
 #if RETRO_USING_SDL2
     ini.SetComment("Controller 1", "IC1Comment", "Controller Mappings for P1 (Based on: https://wiki.libsdl.org/SDL_GameControllerButton)");
     ini.SetComment("Controller 1", "IC1Comment2", "Extra buttons can be mapped with the following IDs:");
-    ini.SetComment("Controller 1", "IC1Comment3", "CONTROLLER_BUTTON_ZL             = 16");
-    ini.SetComment("Controller 1", "IC1Comment4", "CONTROLLER_BUTTON_ZR             = 17");
-    ini.SetComment("Controller 1", "IC1Comment5", "CONTROLLER_BUTTON_LSTICK_UP      = 18");
-    ini.SetComment("Controller 1", "IC1Comment6", "CONTROLLER_BUTTON_LSTICK_DOWN    = 19");
-    ini.SetComment("Controller 1", "IC1Comment7", "CONTROLLER_BUTTON_LSTICK_LEFT    = 20");
-    ini.SetComment("Controller 1", "IC1Comment8", "CONTROLLER_BUTTON_LSTICK_RIGHT   = 21");
-    ini.SetComment("Controller 1", "IC1Comment9", "CONTROLLER_BUTTON_RSTICK_UP      = 22");
+    ini.SetComment("Controller 1", "IC1Comment3", "CONTROLLER_BUTTON_ZL              = 16");
+    ini.SetComment("Controller 1", "IC1Comment4", "CONTROLLER_BUTTON_ZR              = 17");
+    ini.SetComment("Controller 1", "IC1Comment5", "CONTROLLER_BUTTON_LSTICK_UP       = 18");
+    ini.SetComment("Controller 1", "IC1Comment6", "CONTROLLER_BUTTON_LSTICK_DOWN     = 19");
+    ini.SetComment("Controller 1", "IC1Comment7", "CONTROLLER_BUTTON_LSTICK_LEFT     = 20");
+    ini.SetComment("Controller 1", "IC1Comment8", "CONTROLLER_BUTTON_LSTICK_RIGHT    = 21");
+    ini.SetComment("Controller 1", "IC1Comment9", "CONTROLLER_BUTTON_RSTICK_UP       = 22");
     ini.SetComment("Controller 1", "IC1Comment10", "CONTROLLER_BUTTON_RSTICK_DOWN    = 23");
     ini.SetComment("Controller 1", "IC1Comment11", "CONTROLLER_BUTTON_RSTICK_LEFT    = 24");
     ini.SetComment("Controller 1", "IC1Comment12", "CONTROLLER_BUTTON_RSTICK_RIGHT   = 25");
@@ -329,7 +424,13 @@ void WriteSettings() {
     ini.SetInteger("Controller 1", "A", inputDevice[INPUT_BUTTONA].contMappings);
     ini.SetInteger("Controller 1", "B", inputDevice[INPUT_BUTTONB].contMappings);
     ini.SetInteger("Controller 1", "C", inputDevice[INPUT_BUTTONC].contMappings);
+    ini.SetInteger("Controller 1", "X", inputDevice[INPUT_BUTTONX].contMappings);
+    ini.SetInteger("Controller 1", "Y", inputDevice[INPUT_BUTTONY].contMappings);
+    ini.SetInteger("Controller 1", "Z", inputDevice[INPUT_BUTTONZ].contMappings);
+    ini.SetInteger("Controller 1", "L", inputDevice[INPUT_BUTTONL].contMappings);
+    ini.SetInteger("Controller 1", "R", inputDevice[INPUT_BUTTONR].contMappings);
     ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_START].contMappings);
+    ini.SetInteger("Controller 1", "Start", inputDevice[INPUT_SELECT].contMappings);
 
     ini.Write(BASE_PATH"settings.ini");
 }

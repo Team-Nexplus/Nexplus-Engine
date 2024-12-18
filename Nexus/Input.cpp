@@ -345,41 +345,65 @@ void ReadInputDevice() {
 #endif
 
 void CheckKeyPress(InputData *input, byte flags) {
-    if (flags & 0x1)
-        input->up = inputDevice[INPUT_UP].press;
-    if (flags & 0x2)
-        input->down = inputDevice[INPUT_DOWN].press;
-    if (flags & 0x4)
-        input->left = inputDevice[INPUT_LEFT].press;
-    if (flags & 0x8)
-        input->right = inputDevice[INPUT_RIGHT].press;
-    if (flags & 0x10)
-        input->A = inputDevice[INPUT_BUTTONA].press;
-    if (flags & 0x20)
-        input->B = inputDevice[INPUT_BUTTONB].press;
-    if (flags & 0x40)
-        input->C = inputDevice[INPUT_BUTTONC].press;
-    if (flags & 0x80)
-        input->start = inputDevice[INPUT_START].press;
-    if (flags & 0x80)
-        anyPress = inputDevice[INPUT_ANY].press;
+	if (flags & 0x1)
+		input->up = inputDevice[INPUT_UP].press;
+	if (flags & 0x2)
+		input->down = inputDevice[INPUT_DOWN].press;
+	if (flags & 0x4)
+		input->left = inputDevice[INPUT_LEFT].press;
+	if (flags & 0x8)
+		input->right = inputDevice[INPUT_RIGHT].press;
+	if (flags & 0x10)
+		input->A = inputDevice[INPUT_BUTTONA].press;
+	if (flags & 0x20)
+		input->B = inputDevice[INPUT_BUTTONB].press;
+	if (flags & 0x40)
+		input->C = inputDevice[INPUT_BUTTONC].press;
+	if (flags & 0x80)
+		input->X = inputDevice[INPUT_BUTTONX].press;
+	if (flags & 0x160)
+		input->Y = inputDevice[INPUT_BUTTONY].press;
+	if (flags & 0x320)
+		input->Z = inputDevice[INPUT_BUTTONZ].press;
+	if (flags & 0x640)
+		input->L = inputDevice[INPUT_BUTTONL].press;
+	if (flags & 0x1280)
+		input->R = inputDevice[INPUT_BUTTONR].press;
+	if (flags & 0x2560)
+		input->start = inputDevice[INPUT_START].press;
+	if (flags & 0x5120)
+		input->select = inputDevice[INPUT_SELECT].press;
+	if (flags & 0x2560)
+		anyPress = inputDevice[INPUT_ANY].press;
 }
 
 void CheckKeyDown(InputData *input, byte flags) {
-    if (flags & 0x1)
-        input->up = inputDevice[INPUT_UP].hold;
-    if (flags & 0x2)
-        input->down = inputDevice[INPUT_DOWN].hold;
-    if (flags & 0x4)
-        input->left = inputDevice[INPUT_LEFT].hold;
-    if (flags & 0x8)
-        input->right = inputDevice[INPUT_RIGHT].hold;
-    if (flags & 0x10)
-        input->A = inputDevice[INPUT_BUTTONA].hold;
-    if (flags & 0x20)
-        input->B = inputDevice[INPUT_BUTTONB].hold;
-    if (flags & 0x40)
-        input->C = inputDevice[INPUT_BUTTONC].hold;
-    if (flags & 0x80)
-        input->start = inputDevice[INPUT_START].hold;
+	if (flags & 0x1)
+		input->up = inputDevice[INPUT_UP].hold;
+	if (flags & 0x2)
+		input->down = inputDevice[INPUT_DOWN].hold;
+	if (flags & 0x4)
+		input->left = inputDevice[INPUT_LEFT].hold;
+	if (flags & 0x8)
+		input->right = inputDevice[INPUT_RIGHT].hold;
+	if (flags & 0x10)
+		input->A = inputDevice[INPUT_BUTTONA].hold;
+	if (flags & 0x20)
+		input->B = inputDevice[INPUT_BUTTONB].hold;
+	if (flags & 0x40)
+		input->C = inputDevice[INPUT_BUTTONC].hold;
+	if (flags & 0x80)
+		input->X = inputDevice[INPUT_BUTTONX].hold;
+	if (flags & 0x160)
+		input->Y = inputDevice[INPUT_BUTTONY].hold;
+	if (flags & 0x320)
+		input->Z = inputDevice[INPUT_BUTTONZ].hold;
+	if (flags & 0x640)
+		input->L = inputDevice[INPUT_BUTTONL].hold;
+	if (flags & 0x1280)
+		input->R = inputDevice[INPUT_BUTTONR].hold;
+	if (flags & 0x2560)
+		input->start = inputDevice[INPUT_START].hold;
+	if (flags & 0x5120)
+		input->select = inputDevice[INPUT_SELECT].hold;
 }

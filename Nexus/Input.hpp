@@ -2,27 +2,39 @@
 #define INPUT_H
 
 enum InputButtons {
-    INPUT_UP,
-    INPUT_DOWN,
-    INPUT_LEFT,
-    INPUT_RIGHT,
-    INPUT_BUTTONA,
-    INPUT_BUTTONB,
-    INPUT_BUTTONC,
-    INPUT_START,
-    INPUT_ANY,
-    INPUT_MAX,
+	INPUT_UP,
+	INPUT_DOWN,
+	INPUT_LEFT,
+	INPUT_RIGHT,
+	INPUT_BUTTONA,
+	INPUT_BUTTONB,
+	INPUT_BUTTONC,
+	INPUT_BUTTONX,
+	INPUT_BUTTONY,
+	INPUT_BUTTONZ,
+	INPUT_BUTTONL,
+	INPUT_BUTTONR,
+	INPUT_START,
+	INPUT_SELECT,
+	INPUT_ANY,
+	INPUT_MAX,
 };
 
 struct InputData {
-    bool up;
-    bool down;
-    bool left;
-    bool right;
-    bool A;
-    bool B;
-    bool C;
-    bool start;
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+	bool A;
+	bool B;
+	bool C;
+	bool X;
+	bool Y;
+	bool Z;
+	bool L;
+	bool R;
+	bool start;
+	bool select;
 };
 
 struct InputButton {
