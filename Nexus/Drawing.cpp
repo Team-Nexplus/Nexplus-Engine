@@ -20,7 +20,7 @@ byte GraphicData[GFXDATA_MAX];
 int InitRenderDevice() {
     char gameTitle[0x40];
 
-    sprintf(gameTitle, "%s%s", Engine.GameWindowText, Engine.UseBinFile ? "" : " (Using Data Folder)");
+    sprintf(gameTitle, "%s%s", Engine.GameWindowText, Engine.UseBinFile ? " (Using BIN File)" : "");
 
     Engine.FrameBuffer = new byte[SCREEN_XSIZE * SCREEN_YSIZE];
     memset(Engine.FrameBuffer, 0, (SCREEN_XSIZE * SCREEN_YSIZE) * sizeof(byte));
