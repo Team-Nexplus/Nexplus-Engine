@@ -6,6 +6,14 @@
 InputData GKeyPress = InputData();
 InputData GKeyDown  = InputData();
 
+int touchDown[8];
+int touchX[8];
+int touchY[8];
+int touchID[8];
+float touchXF[8];
+float touchYF[8];
+int touches = 0;
+
 bool anyPress = false;
 
 #if !RETRO_USE_ORIGINAL_CODE
