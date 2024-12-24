@@ -104,5 +104,6 @@ void ReadInputDevice();
 
 void CheckKeyPress(InputData *input, byte Flags);
 void CheckKeyDown(InputData *input, byte Flags);
+int CheckTouchRect(float x1, float y1, float x2, float y2);
 
 #endif // !INPUT_H

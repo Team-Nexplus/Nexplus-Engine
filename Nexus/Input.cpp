@@ -407,3 +407,13 @@ void CheckKeyDown(InputData *input, byte flags) {
 	if (flags & 0x5120)
 		input->select = inputDevice[INPUT_SELECT].hold;
 }
+
+int CheckTouchRect(float x, float y, float w, float h)
+{
+    for (int f = 0; f < touches; ++f) {
+        if (touchDown[f] && touchXF[f] > (x - w) && touchYF[f] > (y - h) && touchXF[f] <= (x + w) && touchYF[f] <= (y + h)) {
+            return f;
+        }
+    }
+    return -1;
+}
