@@ -1788,17 +1788,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_TEMPVALUE6: ScriptEng.operands[i] = ScriptEng.tempValue[6]; break;
                     case VAR_TEMPVALUE7: ScriptEng.operands[i] = ScriptEng.tempValue[7]; break;
                     case VAR_CHECKRESULT: ScriptEng.operands[i] = ScriptEng.checkResult; break;
-                    case FUNC_CHECKTOUCHRECT: opcodeSize = 0; scriptEng.checkResult = -1;
-                        #if !RETRO_USE_ORIGINAL_CODE
-                           AddDebugHitbox(H_TYPE_FINGER, NULL, scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]);
-                        #endif
-                        for (int f = 0; f < touches; ++f) {
-                            if (touchDown[f] && touchX[f] > scriptEng.operands[0] && touchX[f] < scriptEng.operands[2] && touchY[f] > scriptEng.operands[1]
-                                && touchY[f] < scriptEng.operands[3]) {
-                                scriptEng.checkResult = f;
-                            }
-                        }
-                    break;
                     case VAR_ARRAYPOS0: ScriptEng.operands[i] = ScriptEng.arrayPosition[0]; break;
                     case VAR_ARRAYPOS1: ScriptEng.operands[i] = ScriptEng.arrayPosition[1]; break;
                     case VAR_KEYDOWNUP: ScriptEng.operands[i] = GKeyDown.up; break;
@@ -2230,6 +2219,19 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 ScriptEng.checkResult = ScriptEng.operands[0] < ScriptEng.operands[1];
                 opcodeSize            = 0;
                 break;
+            case FUNC_CHECKTOUCHRECT: {
+//            	opcodeSize = 0; scriptEng.checkResult = -1;
+//                #if !RETRO_USE_ORIGINAL_CODE
+//                   AddDebugHitbox(H_TYPE_FINGER, NULL, scriptEng.operands[0], scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]);
+//                #endif
+//                for (int f = 0; f < touches; ++f) {
+//                    if (touchDown[f] && touchX[f] > scriptEng.operands[0] && touchX[f] < scriptEng.operands[2] && touchY[f] > scriptEng.operands[1]
+//                        && touchY[f] < scriptEng.operands[3]) {
+//                        scriptEng.checkResult = f;
+//                    }
+//                }
+            }
+            break;
             case FUNC_CHECKNOTEQUAL:
                 ScriptEng.checkResult = ScriptEng.operands[0] != ScriptEng.operands[1];
                 opcodeSize            = 0;
