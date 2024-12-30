@@ -25,7 +25,7 @@ enum PlayerAni {
     ANI_PUSHING,
     ANI_FLAILINGLEFT,
     ANI_FLAILINGRIGHT,
-    ANI_SLIDING,
+    ANI_SLIDING,  // 21
     ANI_FINISHPOSE = 23,
     ANI_CORKSCREW  = 34,
     ANI_HANGING    = 43,
@@ -140,6 +140,26 @@ extern ushort DelayLeft;
 extern ushort DelayRight;
 extern ushort DelayJumpPress;
 extern ushort DelayJumpHold;
+extern ushort DelaytriggerPress;
+extern ushort DelaytriggerHold;
+extern ushort DelaybumperPress;
+extern ushort DelaybumperHold;
+extern ushort DelayaPress;
+extern ushort DelayaHold;
+extern ushort DelaybPress;
+extern ushort DelaybHold;
+extern ushort DelaycPress;
+extern ushort DelaycHold;
+extern ushort DelayxPress;
+extern ushort DelayxHold;
+extern ushort DelayyPress;
+extern ushort DelayyHold;
+extern ushort DelayzPress;
+extern ushort DelayzHold;
+extern ushort DelaylPress;
+extern ushort DelaylHold;
+extern ushort DelayrPress;
+extern ushort DelayrHold;
 
 void LoadPlayerFromList(byte characterID, byte playerID);
 
