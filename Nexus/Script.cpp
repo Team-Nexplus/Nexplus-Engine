@@ -203,7 +203,7 @@ const char variableNames[][0x20] = {
     "Player.Right",
     "Player.JumpPress",
     "Player.JumpHold",
-    "Player.TriggerPress",
+    "Player.TriggerPress", // Nexplus additions start here
     "Player.TriggerHold",
     "Player.BumperPress",
     "Player.BumperHold",
@@ -222,7 +222,7 @@ const char variableNames[][0x20] = {
     "Player.LPress",
     "Player.LHold",
     "Player.RPress",
-    "Player.RHold",
+    "Player.RHold", // Nexplus additions end here
     "Player.FollowPlayer1",
     "Player.LookPos",
     "Player.Water",
@@ -356,7 +356,8 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("LoadVideo", 1),
                                    FunctionInfo("NextVideoFrame", 0),
                                    FunctionInfo("PlayStageSfx", 2),
-                                   FunctionInfo("StopStageSfx", 1) };
+                                   FunctionInfo("StopStageSfx", 1),
+                                   FunctionInfo("DrawPlayerAni", 5) };
 
 AliasInfo aliases[0x80] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -691,6 +692,7 @@ enum ScrFunction {
     FUNC_NEXTVIDEOFRAME,
     FUNC_PLAYSTAGESFX,
     FUNC_STOPSTAGESFX,
+    FUNC_DRAWPLAYERANI, // Nexplus addition
     FUNC_MAX_CNT
 };
 
@@ -2950,6 +2952,38 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 opcodeSize = 0;
                 StopSfx(NoGlobalSFX + ScriptEng.operands[0]);
                 break;
+            case FUNC_DRAWPLAYERANI: { //Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int)
+                opcodeSize            = 0;
+                SpriteAnimation *anim = &PlayerScriptList[PlayerList[0].type].animations[ScriptEng.operands[0]];
+
+                if (ScriptEng.operands[4] == 0) { // Sprite Pos
+                DrawSprite(
+                			(anim->frames[ScriptEng.operands[1]].pivotX + ((entity->XPos >> 16) - XScrollOffset)) + ScriptEng.operands[2],
+                			(anim->frames[ScriptEng.operands[1]].pivotY + ((entity->YPos >> 16) - YScrollOffset)) + ScriptEng.operands[3],
+                			anim->frames[ScriptEng.operands[1]].width,
+							anim->frames[ScriptEng.operands[1]].height,
+							anim->frames[ScriptEng.operands[1]].sprX,
+							anim->frames[ScriptEng.operands[1]].sprY,
+							anim->frames[ScriptEng.operands[1]].sheetID);
+				} else if (ScriptEng.operands[4] == 1) { // Screen Pos
+                DrawSprite(anim->frames[ScriptEng.operands[1]].pivotX + ScriptEng.operands[2],
+                			anim->frames[ScriptEng.operands[1]].pivotY + ScriptEng.operands[3],
+                			anim->frames[ScriptEng.operands[1]].width,
+							anim->frames[ScriptEng.operands[1]].height,
+							anim->frames[ScriptEng.operands[1]].sprX,
+							anim->frames[ScriptEng.operands[1]].sprY,
+							anim->frames[ScriptEng.operands[1]].sheetID);
+				} else if (ScriptEng.operands[4] == 2) { // Stage Pos
+                DrawSprite((ScriptEng.operands[2] >> 16) - XScrollOffset + anim->frames[ScriptEng.operands[1]].pivotX,
+                			(ScriptEng.operands[3] >> 16) - YScrollOffset + anim->frames[ScriptEng.operands[1]].pivotY,
+                			anim->frames[ScriptEng.operands[1]].width,
+							anim->frames[ScriptEng.operands[1]].height,
+							anim->frames[ScriptEng.operands[1]].sprX,
+							anim->frames[ScriptEng.operands[1]].sprY,
+							anim->frames[ScriptEng.operands[1]].sheetID);
+				}
+                break;
+            }
         }
 
         // Set Values

@@ -45,7 +45,7 @@ endif
 OBJECTS = $(SOURCES:%=objects/%.o)
 DEPENDENCIES = $(SOURCES:%=objects/%.d)
 
-all: bin/nexus
+all: bin/Nexplus
 
 include $(wildcard $(DEPENDENCIES))
 
@@ -53,12 +53,12 @@ objects/%.o: %
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS_ALL) -std=c++17 $< -o $@ -c
 
-bin/nexus: $(OBJECTS)
+bin/Nexplus: $(OBJECTS)
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS_ALL) $(LDFLAGS_ALL) $^ -o $@ $(LIBS_ALL)
 
-install: bin/nexus
-	install -Dp -m755 bin/nexus $(prefix)/bin/nexus
+install: bin/Nexplus
+	install -Dp -m755 bin/Nexplus $(prefix)/bin/Nexplus
 
 clean:
 	 rm -r -f bin && rm -r -f objects
