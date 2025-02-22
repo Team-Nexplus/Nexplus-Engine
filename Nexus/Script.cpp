@@ -261,6 +261,11 @@ const char variableNames[][0x20] = {
     "Stage.YBoundary1",
     "Stage.YBoundary2",
     "Object.OutOfBounds",
+    // More Nexplus Additions
+    "Screen.CenterX",
+    "Screen.CenterY",
+    "Screen.XSize",
+    "Screen.YSize",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -594,6 +599,10 @@ enum ScrVariable {
     VAR_STAGEYBOUNDARY1,
     VAR_STAGEYBOUNDARY2,
     VAR_OBJECTOUTOFBOUNDS,
+    VAR_SCREENCENTERX,
+    VAR_SCREENCENTERY,
+    VAR_SCREENXSIZE,
+    VAR_SCREENYSIZE,
     VAR_MAX_CNT,
 };
 
@@ -2153,6 +2162,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         }
                         break;
                     }
+                    case VAR_SCREENCENTERX: ScriptEng.operands[i] = SCREEN_CENTERX; break;
+                    case VAR_SCREENCENTERY: ScriptEng.operands[i] = SCREEN_CENTERY; break;
+                    case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
+                    case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3652,6 +3665,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         }
                         break;
                     case VAR_OBJECTOUTOFBOUNDS: break;
+                    case VAR_SCREENCENTERX: break;
+                    case VAR_SCREENCENTERY: break;
+                    case VAR_SCREENXSIZE: break;
+                    case VAR_SCREENYSIZE: break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;
