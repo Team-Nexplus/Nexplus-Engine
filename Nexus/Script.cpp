@@ -266,6 +266,7 @@ const char variableNames[][0x20] = {
     "Screen.CenterY",
     "Screen.XSize",
     "Screen.YSize",
+    "Player.ID",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -362,7 +363,8 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("NextVideoFrame", 0),
                                    FunctionInfo("PlayStageSfx", 2),
                                    FunctionInfo("StopStageSfx", 1),
-                                   FunctionInfo("DrawPlayerAni", 5) };
+                                   FunctionInfo("DrawPlayerAni", 5), // Nexplus additions start here
+                                   FunctionInfo("LoadConfigListText", 2), };
 
 AliasInfo aliases[0x80] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -603,6 +605,7 @@ enum ScrVariable {
     VAR_SCREENCENTERY,
     VAR_SCREENXSIZE,
     VAR_SCREENYSIZE,
+    VAR_PLAYERID,
     VAR_MAX_CNT,
 };
 
@@ -701,7 +704,8 @@ enum ScrFunction {
     FUNC_NEXTVIDEOFRAME,
     FUNC_PLAYSTAGESFX,
     FUNC_STOPSTAGESFX,
-    FUNC_DRAWPLAYERANI, // Nexplus addition
+    FUNC_DRAWPLAYERANI, // Nexplus additions start here
+    FUNC_LOADCONFIGLISTTEXT,
     FUNC_MAX_CNT
 };
 
@@ -2166,6 +2170,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENCENTERY: ScriptEng.operands[i] = SCREEN_CENTERY; break;
                     case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
                     case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
+                    case VAR_PLAYERID: ScriptEng.operands[i] = PlayerID; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -2997,6 +3002,11 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				}
                 break;
             }
+            case FUNC_LOADCONFIGLISTTEXT: {
+                opcodeSize                           = 0;
+                LoadConfigListText(&GameMenu[ScriptEng.operands[0]], ScriptEng.operands[1]);
+                break;
+            }
         }
 
         // Set Values
@@ -3669,6 +3679,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENCENTERY: break;
                     case VAR_SCREENXSIZE: break;
                     case VAR_SCREENYSIZE: break;
+                    case VAR_PLAYERID: PlayerID = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;
