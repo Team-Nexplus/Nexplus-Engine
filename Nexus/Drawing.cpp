@@ -1762,6 +1762,123 @@ void DrawSprite(int XPos, int YPos, int width, int height, int sprX, int sprY, i
     }
 }
 
+void DrawSpriteFlipped(int XPos, int YPos, int width, int height, int sprX, int sprY, int direction, int sheetID) {
+
+    int widthFlip  = width;
+    int heightFlip = height;
+
+    if (width + XPos > SCREEN_XSIZE)
+        width = SCREEN_XSIZE - XPos;
+    if (XPos < 0) {
+        sprX -= XPos;
+        width += XPos;
+        widthFlip += XPos + XPos;
+        XPos = 0;
+    }
+    if (height + YPos > SCREEN_YSIZE)
+        height = SCREEN_YSIZE - YPos;
+    if (YPos < 0) {
+        sprY -= YPos;
+        height += YPos;
+        heightFlip += YPos + YPos;
+        YPos = 0;
+    }
+    if (width <= 0 || height <= 0)
+        return;
+
+    GFXSurface *surface  = &GfxSurface[sheetID];
+    int pitch;
+    int gfxPitch;
+    byte *gfxDataPtr;
+    byte *pixelBufferPtr;
+    switch (direction) {
+        case FLIP_NONE:
+			pitch            = SCREEN_XSIZE - width;
+			gfxPitch         = surface->width - width;
+			gfxDataPtr     = &GraphicData[sprX + surface->width * sprY + surface->dataPosition];
+			pixelBufferPtr = &Engine.FrameBuffer[XPos + SCREEN_XSIZE * YPos];
+
+            while (height--) {
+				int w = width;
+				while (w--) {
+				    if (*gfxDataPtr > 0)
+				        *pixelBufferPtr = *gfxDataPtr;
+				    ++gfxDataPtr;
+				    ++pixelBufferPtr;
+				}
+				pixelBufferPtr += pitch;
+				gfxDataPtr += gfxPitch;
+			}
+            break;
+        case FLIP_X:
+			pitch            = SCREEN_XSIZE - width;
+			gfxPitch         = width + surface->width;
+			gfxDataPtr     = &GraphicData[widthFlip - 1 + sprX + surface->width * sprY + surface->dataPosition];
+			pixelBufferPtr = &Engine.FrameBuffer[XPos + SCREEN_XSIZE * YPos];
+
+            while (height--) {
+				int w = width;
+				while (w--) {
+				    if (*gfxDataPtr > 0)
+				        *pixelBufferPtr = *gfxDataPtr;
+				    --gfxDataPtr;
+				    ++pixelBufferPtr;
+				}
+				pixelBufferPtr += pitch;
+				gfxDataPtr += gfxPitch;
+			}
+            break;
+        case FLIP_Y:
+			pitch            = SCREEN_XSIZE - width;
+			gfxPitch         = width + surface->width;
+			gfxDataPtr     = &GraphicData[sprX + surface->width * (sprY + heightFlip - 1) + surface->dataPosition];
+			pixelBufferPtr = &Engine.FrameBuffer[XPos + SCREEN_XSIZE * YPos];
+
+            while (height--) {
+				int w = width;
+				while (w--) {
+				    if (*gfxDataPtr > 0)
+				        *pixelBufferPtr = *gfxDataPtr;
+				    ++gfxDataPtr;
+				    ++pixelBufferPtr;
+				}
+				pixelBufferPtr += pitch;
+				gfxDataPtr -= gfxPitch;
+			}
+            break;
+        case FLIP_XY:
+			pitch            = SCREEN_XSIZE - width;
+			gfxPitch         = surface->width - width;
+			gfxDataPtr     = &GraphicData[sprX + surface->width * sprY + surface->dataPosition];
+			pixelBufferPtr = &Engine.FrameBuffer[XPos + SCREEN_XSIZE * YPos];
+
+            while (height--) {
+				int w = width;
+				while (w--) {
+				    if (*gfxDataPtr > 0)
+				        *pixelBufferPtr = *gfxDataPtr;
+				    ++gfxDataPtr;
+				    ++pixelBufferPtr;
+				}
+				pixelBufferPtr += pitch;
+				gfxDataPtr += gfxPitch;
+			}
+            break;
+        default: break;
+	}
+    while (height--) {
+        int w = width;
+        while (w--) {
+            if (*gfxDataPtr > 0)
+                *pixelBufferPtr = *gfxDataPtr;
+            ++gfxDataPtr;
+            ++pixelBufferPtr;
+        }
+        pixelBufferPtr += pitch;
+        gfxDataPtr += gfxPitch;
+    }
+}
+
 void DrawSpriteNoKey(int XPos, int YPos, int width, int height, int sprX, int sprY, int sheetID) {
     if (width + XPos > SCREEN_XSIZE)
         width = SCREEN_XSIZE - XPos;

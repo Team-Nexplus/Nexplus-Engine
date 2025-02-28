@@ -164,7 +164,7 @@ void ProcessSystemMenu() {
 #else
             if (GKeyPress.start) {
 #endif
-                PlayerID = GameMenu[1].selection1;
+                PlayerListPos = GameMenu[1].selection1;
                 SetupTextMenu(&GameMenu[0], 0);
                 AddTextMenuEntry(&GameMenu[0], "SELECT A STAGE LIST");
                 AddTextMenuEntry(&GameMenu[0], " ");

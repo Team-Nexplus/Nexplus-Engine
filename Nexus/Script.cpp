@@ -18,12 +18,12 @@ int scriptDataOffset = 0;
 int JumpTableDataPos = 0;
 int JumpTableOffset  = 0;
 
-#define ALIAS_COUNT (0x80)
 #if !RETRO_USE_ORIGINAL_CODE
 #define COMMONALIAS_COUNT (22)
 #else
 #define COMMONALIAS_COUNT (14)
 #endif
+#define ALIAS_COUNT (COMMONALIAS_COUNT + 0x60)
 int NO_ALIASES = 0;
 int lineID     = 0;
 
@@ -266,7 +266,7 @@ const char variableNames[][0x20] = {
     "Screen.CenterY",
     "Screen.XSize",
     "Screen.YSize",
-    "Player.ID",
+    "PlayerListPos",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -366,7 +366,7 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("DrawPlayerAni", 5), // Nexplus additions start here
                                    FunctionInfo("LoadConfigListText", 2), };
 
-AliasInfo aliases[0x80] = {
+AliasInfo aliases[ALIAS_COUNT] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
     AliasInfo("FX_ROTATE", "1"),     AliasInfo("FX_INK", "2"),      AliasInfo("PRESENTATION_STAGE", "0"),
     AliasInfo("REGULAR_STAGE", "1"), AliasInfo("BONUS_STAGE", "2"), AliasInfo("SPECIAL_STAGE", "3"),
@@ -377,6 +377,7 @@ AliasInfo aliases[0x80] = {
     AliasInfo("FX_TINT", "3"),       AliasInfo("FLIP_NONE", "0"),   AliasInfo("FLIP_X", "1"),
     AliasInfo("FLIP_Y", "2"),        AliasInfo("FLIP_XY", "3"),
 #endif
+    AliasInfo("FX_FLIP", "4"),
 };
 
 const char scriptEvaluationTokens[][0x4] = {
@@ -605,7 +606,7 @@ enum ScrVariable {
     VAR_SCREENCENTERY,
     VAR_SCREENXSIZE,
     VAR_SCREENYSIZE,
-    VAR_PLAYERID,
+    VAR_PLAYERLISTPOS,
     VAR_MAX_CNT,
 };
 
@@ -2170,7 +2171,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENCENTERY: ScriptEng.operands[i] = SCREEN_CENTERY; break;
                     case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
                     case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
-                    case VAR_PLAYERID: ScriptEng.operands[i] = PlayerID; break;
+                    case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -2657,6 +2658,33 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                                              scriptInfo->spriteSheetID);
                         }
                         break;
+                    case FX_FLIP:
+                        switch (entity->direction) {
+                            default:
+                            case FLIP_NONE:
+                                DrawSpriteFlipped((ScriptEng.operands[2] >> 16) - XScrollOffset + spriteFrame->pivotX,
+                                                  (ScriptEng.operands[3] >> 16) - YScrollOffset + spriteFrame->pivotY, spriteFrame->width,
+                                                  spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_NONE, scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_X:
+                                DrawSpriteFlipped((ScriptEng.operands[2] >> 16) - XScrollOffset - spriteFrame->width - spriteFrame->pivotX,
+                                                  (ScriptEng.operands[3] >> 16) - YScrollOffset + spriteFrame->pivotY, spriteFrame->width,
+                                                  spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_X, scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_Y:
+                                DrawSpriteFlipped((ScriptEng.operands[2] >> 16) - XScrollOffset + spriteFrame->pivotX,
+                                                  (ScriptEng.operands[3] >> 16) - YScrollOffset - spriteFrame->height - spriteFrame->pivotY,
+                                                  spriteFrame->width, spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_Y,
+                                                  scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_XY:
+                                DrawSpriteFlipped((ScriptEng.operands[2] >> 16) - XScrollOffset - spriteFrame->width - spriteFrame->pivotX,
+                                                  (ScriptEng.operands[3] >> 16) - YScrollOffset - spriteFrame->height - spriteFrame->pivotY,
+                                                  spriteFrame->width, spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_XY,
+                                                  scriptInfo->spriteSheetID);
+                                break;
+                        }
+                        break;
                 }
                 break;
             case FUNC_DRAWSPRITESCREENFX:
@@ -2696,6 +2724,31 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                             DrawScaledSprite(entity->direction, ScriptEng.operands[2], ScriptEng.operands[3], -spriteFrame->pivotX,
                                              -spriteFrame->pivotY, entity->scale, entity->scale, spriteFrame->width, spriteFrame->height,
                                              spriteFrame->sprX, spriteFrame->sprY, scriptInfo->spriteSheetID);
+                        }
+                        break;
+                    case FX_FLIP:
+                        switch (entity->direction) {
+                            default:
+                            case FLIP_NONE:
+                                DrawSpriteFlipped(ScriptEng.operands[2] + spriteFrame->pivotX, ScriptEng.operands[3] + spriteFrame->pivotY,
+                                                  spriteFrame->width, spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_NONE,
+                                                  scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_X:
+                                DrawSpriteFlipped(ScriptEng.operands[2] - spriteFrame->width - spriteFrame->pivotX,
+                                                  ScriptEng.operands[3] + spriteFrame->pivotY, spriteFrame->width, spriteFrame->height,
+                                                  spriteFrame->sprX, spriteFrame->sprY, FLIP_X, scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_Y:
+                                DrawSpriteFlipped(ScriptEng.operands[2] + spriteFrame->pivotX,
+                                                  ScriptEng.operands[3] - spriteFrame->height - spriteFrame->pivotY, spriteFrame->width,
+                                                  spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_Y, scriptInfo->spriteSheetID);
+                                break;
+                            case FLIP_XY:
+                                DrawSpriteFlipped(ScriptEng.operands[2] - spriteFrame->width - spriteFrame->pivotX,
+                                                  ScriptEng.operands[3] - spriteFrame->height - spriteFrame->pivotY, spriteFrame->width,
+                                                  spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_XY, scriptInfo->spriteSheetID);
+                                break;
                         }
                         break;
                 }
@@ -3140,163 +3193,163 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         break;
                     }
                     case VAR_OBJECTVALUE10: {
-                        ObjectEntityList[arrayVal].values[10]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[10] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE11: {
-                        ObjectEntityList[arrayVal].values[11]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[11] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE12: {
-                        ObjectEntityList[arrayVal].values[12]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[12] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE13: {
-                        ObjectEntityList[arrayVal].values[13]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[13] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE14: {
-                        ObjectEntityList[arrayVal].values[14]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[14] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE15: {
-                        ObjectEntityList[arrayVal].values[15]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[15] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE16: {
-                        ObjectEntityList[arrayVal].values[16]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[16] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE17: {
-                        ObjectEntityList[arrayVal].values[17]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[17] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE18: {
-                        ObjectEntityList[arrayVal].values[18]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[18] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE19: {
-                        ObjectEntityList[arrayVal].values[19]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[19] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE20: {
-                        ObjectEntityList[arrayVal].values[20]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[20] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE21: {
-                        ObjectEntityList[arrayVal].values[21]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[21] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE22: {
-                        ObjectEntityList[arrayVal].values[22]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[22] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE23: {
-                        ObjectEntityList[arrayVal].values[23]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[23] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE24: {
-                        ObjectEntityList[arrayVal].values[24]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[24] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE25: {
-                        ObjectEntityList[arrayVal].values[25]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[25] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE26: {
-                        ObjectEntityList[arrayVal].values[26]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[26] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE27: {
-                        ObjectEntityList[arrayVal].values[27]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[27] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE28: {
-                        ObjectEntityList[arrayVal].values[28]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[28] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE29: {
-                        ObjectEntityList[arrayVal].values[29]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[29] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE30: {
-                        ObjectEntityList[arrayVal].values[30]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[30] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE31: {
-                        ObjectEntityList[arrayVal].values[31]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[31] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE32: {
-                        ObjectEntityList[arrayVal].values[32]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[32] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE33: {
-                        ObjectEntityList[arrayVal].values[33]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[33] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE34: {
-                        ObjectEntityList[arrayVal].values[34]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[34] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE35: {
-                        ObjectEntityList[arrayVal].values[35]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[35] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE36: {
-                        ObjectEntityList[arrayVal].values[36]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[36] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE37: {
-                        ObjectEntityList[arrayVal].values[37]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[37] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE38: {
-                        ObjectEntityList[arrayVal].values[38]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[38] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE39: {
-                        ObjectEntityList[arrayVal].values[39]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[39] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE40: {
-                        ObjectEntityList[arrayVal].values[40]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[40] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE41: {
-                        ObjectEntityList[arrayVal].values[41]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[41] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE42: {
-                        ObjectEntityList[arrayVal].values[42]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[42] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE43: {
-                        ObjectEntityList[arrayVal].values[43]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[43] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE44: {
-                        ObjectEntityList[arrayVal].values[44]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[44] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE45: {
-                        ObjectEntityList[arrayVal].values[45]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[45] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE46: {
-                        ObjectEntityList[arrayVal].values[46]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[46] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE47: {
-                        ObjectEntityList[arrayVal].values[47]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[47] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE48: {
-                        ObjectEntityList[arrayVal].values[48]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[48] = ScriptEng.operands[i];
                         break;
                     }
                     case VAR_OBJECTVALUE49: {
-                        ObjectEntityList[arrayVal].values[49]  = ScriptEng.operands[i];
+                        ObjectEntityList[arrayVal].values[49] = ScriptEng.operands[i];
                         break;
                     }
 
@@ -3679,7 +3732,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENCENTERY: break;
                     case VAR_SCREENXSIZE: break;
                     case VAR_SCREENYSIZE: break;
-                    case VAR_PLAYERID: PlayerID = ScriptEng.operands[i]; break;
+                    case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

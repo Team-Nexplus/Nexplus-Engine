@@ -216,7 +216,7 @@ void LoadStageFiles(void) {
     byte fileBuffer2 = 0;
     int scriptID     = 2;
     char strBuffer[0x100];
-    LoadPlayerFromList(PlayerID, 0);
+    LoadPlayerFromList(PlayerListPos, 0);
 
     if (!CheckCurrentStageFolder(StageListPosition)) {
 #if !RETRO_USE_ORIGINAL_CODE

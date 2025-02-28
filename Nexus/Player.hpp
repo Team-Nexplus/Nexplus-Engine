@@ -133,7 +133,7 @@ extern Player PlayerList[PLAYER_COUNT];
 extern PlayerScript PlayerScriptList[PLAYER_COUNT];
 extern int PlayerNo;
 extern int activePlayerCount;
-extern int PlayerID;
+extern int PlayerListPos;
 
 extern ushort DelayUp;
 extern ushort DelayDown;

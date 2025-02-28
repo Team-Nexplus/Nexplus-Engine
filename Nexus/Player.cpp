@@ -4,7 +4,7 @@ Player PlayerList[PLAYER_COUNT];
 PlayerScript PlayerScriptList[PLAYER_COUNT];
 int PlayerNo          = 0;
 int activePlayerCount = 1;
-int PlayerID          = 0;
+int PlayerListPos     = 0;
 
 ushort DelayUp           = 0;
 ushort DelayDown         = 0;

@@ -9,7 +9,7 @@
 
 enum FlipFlags { FLIP_NONE, FLIP_X, FLIP_Y, FLIP_XY };
 enum InkFlags { INK_NONE, INK_BLEND, INK_TINT };
-enum DrawFXFlags { FX_SCALE, FX_ROTATE, FX_INK, FX_TINT };
+enum DrawFXFlags { FX_SCALE, FX_ROTATE, FX_INK, FX_TINT, FX_FLIP };
 
 struct DrawListEntry {
     int entityRefs[ENTITY_COUNT];
@@ -74,6 +74,7 @@ void DrawScaledTintMask(int direction, int XPos, int YPos, int pivotX, int pivot
 
 // Sprite Drawing
 void DrawSprite(int XPos, int YPos, int width, int height, int sprX, int sprY, int sheetID);
+void DrawSpriteFlipped(int XPos, int YPos, int width, int height, int sprX, int sprY, int direction, int sheetID);
 void DrawScaledSprite(int direction, int XPos, int YPos, int pivotX, int pivotY, int scaleX, int scaleY, int width, int height, int sprX, int sprY,
                       int sheetID);
 void DrawRotatedSprite(int direction, int XPos, int YPos, int pivotX, int pivotY, int sprX, int sprY, int width, int height, int rotation,
