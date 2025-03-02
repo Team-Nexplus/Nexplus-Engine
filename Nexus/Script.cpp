@@ -18,12 +18,12 @@ int scriptDataOffset = 0;
 int JumpTableDataPos = 0;
 int JumpTableOffset  = 0;
 
+#define ALIAS_COUNT 0x100
 #if !RETRO_USE_ORIGINAL_CODE
-#define COMMONALIAS_COUNT (22)
+#define COMMONALIAS_COUNT (23)
 #else
-#define COMMONALIAS_COUNT (14)
+#define COMMONALIAS_COUNT (15)
 #endif
-#define ALIAS_COUNT (COMMONALIAS_COUNT + 0x60)
 int NO_ALIASES = 0;
 int lineID     = 0;
 
@@ -37,8 +37,8 @@ struct AliasInfo {
         StrCopy(value, aliasVal);
     }
 
-    char name[0x20];
-    char value[0x20];
+    char name[0x40];
+    char value[0x40];
 };
 
 struct FunctionInfo {
@@ -363,10 +363,10 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("NextVideoFrame", 0),
                                    FunctionInfo("PlayStageSfx", 2),
                                    FunctionInfo("StopStageSfx", 1),
-                                   FunctionInfo("DrawPlayerAni", 5), // Nexplus additions start here
+                                   FunctionInfo("DrawPlayerAni", 7), // Nexplus additions start here
                                    FunctionInfo("LoadConfigListText", 2), };
 
-AliasInfo aliases[ALIAS_COUNT] = {
+AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
     AliasInfo("FX_ROTATE", "1"),     AliasInfo("FX_INK", "2"),      AliasInfo("PRESENTATION_STAGE", "0"),
     AliasInfo("REGULAR_STAGE", "1"), AliasInfo("BONUS_STAGE", "2"), AliasInfo("SPECIAL_STAGE", "3"),
@@ -2660,7 +2660,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         break;
                     case FX_FLIP:
                         switch (entity->direction) {
-                            default:
                             case FLIP_NONE:
                                 DrawSpriteFlipped((ScriptEng.operands[2] >> 16) - XScrollOffset + spriteFrame->pivotX,
                                                   (ScriptEng.operands[3] >> 16) - YScrollOffset + spriteFrame->pivotY, spriteFrame->width,
@@ -2728,7 +2727,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         break;
                     case FX_FLIP:
                         switch (entity->direction) {
-                            default:
                             case FLIP_NONE:
                                 DrawSpriteFlipped(ScriptEng.operands[2] + spriteFrame->pivotX, ScriptEng.operands[3] + spriteFrame->pivotY,
                                                   spriteFrame->width, spriteFrame->height, spriteFrame->sprX, spriteFrame->sprY, FLIP_NONE,
@@ -3023,8 +3021,94 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 opcodeSize = 0;
                 StopSfx(NoGlobalSFX + ScriptEng.operands[0]);
                 break;
-            case FUNC_DRAWPLAYERANI: { //Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int)
+            case FUNC_DRAWPLAYERANI: {
+            // Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int), 
+            // Ani File (int, Optional), PlayerID (int, Optional)
                 opcodeSize            = 0;
+
+                if (ScriptText != "") {
+                	if (ScriptEng.operands[6] == 0) {
+						LoadPlayerAnimation(ScriptText, 0);
+                	} else {
+                		--ScriptEng.operands[6];
+                	    FileInfo info;
+						char strBuf[0x100];
+						byte fileBuffer = 0;
+						byte count      = 0;
+						byte strLen     = 0;
+						if (LoadFile("Data/Game/GameConfig.bin", &info)) {
+							// Name
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+
+							// 'Data'
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+
+							// About
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+
+							// Script Paths
+							FileRead(&count, 1);
+							for (int s = 0; s < count; ++s) {
+								FileRead(&strLen, 1);
+								FileRead(&strBuf, strLen);
+								strBuf[strLen] = 0;
+							}
+
+							// Variables
+							FileRead(&count, 1);
+							for (int v = 0; v < count; ++v) {
+								// Var Name
+								FileRead(&strLen, 1);
+								FileRead(&strBuf, strLen);
+								strBuf[strLen] = 0;
+
+								// Var Value
+								FileRead(&fileBuffer, 1);
+								FileRead(&fileBuffer, 1);
+								FileRead(&fileBuffer, 1);
+								FileRead(&fileBuffer, 1);
+							}
+
+							// SFX
+							FileRead(&count, 1);
+							for (int s = 0; s < count; ++s) {
+								FileRead(&strLen, 1);
+								FileRead(&strBuf, strLen);
+								strBuf[strLen] = 0;
+							}
+
+							// Players
+							FileRead(&count, 1);
+							for (int p = 0; p < count; ++p) {
+								FileRead(&strLen, 1);
+								FileRead(&strBuf, strLen); // player anim file
+								strBuf[strLen] = '\0';
+
+								FileRead(&strLen, 1);
+								FileRead(&PlayerScriptList[p].scriptPath, strLen); // player script file
+								PlayerScriptList[p].scriptPath[strLen] = '\0';
+
+								if (ScriptEng.operands[5] == p) {
+									GetFileInfo(&info);
+									CloseFile();
+									LoadPlayerAnimation(strBuf, ScriptEng.operands[6]);
+									SetFileInfo(&info);
+								}
+								FileRead(&strLen, 1);
+								FileRead(&strBuf, strLen); // player name
+								strBuf[strLen] = '\0';
+							}
+							CloseFile();
+						}
+					}
+				}
+
                 SpriteAnimation *anim = &PlayerScriptList[PlayerList[0].type].animations[ScriptEng.operands[0]];
 
                 if (ScriptEng.operands[4] == 0) { // Sprite Pos
