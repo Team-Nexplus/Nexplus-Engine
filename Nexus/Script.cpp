@@ -363,7 +363,7 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("NextVideoFrame", 0),
                                    FunctionInfo("PlayStageSfx", 2),
                                    FunctionInfo("StopStageSfx", 1),
-                                   FunctionInfo("DrawPlayerAni", 7), // Nexplus additions start here
+                                   FunctionInfo("DrawPlayerAni", 8), // Nexplus additions start here
                                    FunctionInfo("LoadConfigListText", 2), };
 
 AliasInfo aliases[0x160] = {
@@ -3023,88 +3023,90 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 break;
             case FUNC_DRAWPLAYERANI: {
             // Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int), 
-            // Ani File (int, Optional), PlayerID (int, Optional)
+            // Ani File (int, Optional), PlayerID (int, Optional), Load Ani? (bool)
                 opcodeSize            = 0;
 
-                if (ScriptText != "") {
-                	if (ScriptEng.operands[6] == 0) {
-						LoadPlayerAnimation(ScriptText, 0);
-                	} else {
-                		--ScriptEng.operands[6];
-                	    FileInfo info;
-						char strBuf[0x100];
-						byte fileBuffer = 0;
-						byte count      = 0;
-						byte strLen     = 0;
-						if (LoadFile("Data/Game/GameConfig.bin", &info)) {
-							// Name
-							FileRead(&strLen, 1);
-							FileRead(&strBuf, strLen);
-							strBuf[strLen] = 0;
-
-							// 'Data'
-							FileRead(&strLen, 1);
-							FileRead(&strBuf, strLen);
-							strBuf[strLen] = 0;
-
-							// About
-							FileRead(&strLen, 1);
-							FileRead(&strBuf, strLen);
-							strBuf[strLen] = 0;
-
-							// Script Paths
-							FileRead(&count, 1);
-							for (int s = 0; s < count; ++s) {
-								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen);
-								strBuf[strLen] = 0;
-							}
-
-							// Variables
-							FileRead(&count, 1);
-							for (int v = 0; v < count; ++v) {
-								// Var Name
+                if (ScriptEng.operands[7] == 1) {
+		            if (ScriptText != "") {
+		            	if (ScriptEng.operands[6] == 0) {
+							LoadPlayerAnimation(ScriptText, 0);
+		            	} else {
+		            		--ScriptEng.operands[6];
+		            	    FileInfo info;
+							char strBuf[0x100];
+							byte fileBuffer = 0;
+							byte count      = 0;
+							byte strLen     = 0;
+							if (LoadFile("Data/Game/GameConfig.bin", &info)) {
+								// Name
 								FileRead(&strLen, 1);
 								FileRead(&strBuf, strLen);
 								strBuf[strLen] = 0;
 
-								// Var Value
-								FileRead(&fileBuffer, 1);
-								FileRead(&fileBuffer, 1);
-								FileRead(&fileBuffer, 1);
-								FileRead(&fileBuffer, 1);
-							}
-
-							// SFX
-							FileRead(&count, 1);
-							for (int s = 0; s < count; ++s) {
+								// 'Data'
 								FileRead(&strLen, 1);
 								FileRead(&strBuf, strLen);
 								strBuf[strLen] = 0;
-							}
 
-							// Players
-							FileRead(&count, 1);
-							for (int p = 0; p < count; ++p) {
+								// About
 								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen); // player anim file
-								strBuf[strLen] = '\0';
+								FileRead(&strBuf, strLen);
+								strBuf[strLen] = 0;
 
-								FileRead(&strLen, 1);
-								FileRead(&PlayerScriptList[p].scriptPath, strLen); // player script file
-								PlayerScriptList[p].scriptPath[strLen] = '\0';
-
-								if (ScriptEng.operands[5] == p) {
-									GetFileInfo(&info);
-									CloseFile();
-									LoadPlayerAnimation(strBuf, ScriptEng.operands[6]);
-									SetFileInfo(&info);
+								// Script Paths
+								FileRead(&count, 1);
+								for (int s = 0; s < count; ++s) {
+									FileRead(&strLen, 1);
+									FileRead(&strBuf, strLen);
+									strBuf[strLen] = 0;
 								}
-								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen); // player name
-								strBuf[strLen] = '\0';
+
+								// Variables
+								FileRead(&count, 1);
+								for (int v = 0; v < count; ++v) {
+									// Var Name
+									FileRead(&strLen, 1);
+									FileRead(&strBuf, strLen);
+									strBuf[strLen] = 0;
+
+									// Var Value
+									FileRead(&fileBuffer, 1);
+									FileRead(&fileBuffer, 1);
+									FileRead(&fileBuffer, 1);
+									FileRead(&fileBuffer, 1);
+								}
+
+								// SFX
+								FileRead(&count, 1);
+								for (int s = 0; s < count; ++s) {
+									FileRead(&strLen, 1);
+									FileRead(&strBuf, strLen);
+									strBuf[strLen] = 0;
+								}
+
+								// Players
+								FileRead(&count, 1);
+								for (int p = 0; p < count; ++p) {
+									FileRead(&strLen, 1);
+									FileRead(&strBuf, strLen); // player anim file
+									strBuf[strLen] = '\0';
+
+									FileRead(&strLen, 1);
+									FileRead(&PlayerScriptList[p].scriptPath, strLen); // player script file
+									PlayerScriptList[p].scriptPath[strLen] = '\0';
+
+									if (ScriptEng.operands[5] == p) {
+										GetFileInfo(&info);
+										CloseFile();
+										LoadPlayerAnimation(strBuf, ScriptEng.operands[6]);
+										SetFileInfo(&info);
+									}
+									FileRead(&strLen, 1);
+									FileRead(&strBuf, strLen); // player name
+									strBuf[strLen] = '\0';
+								}
+								CloseFile();
 							}
-							CloseFile();
 						}
 					}
 				}
