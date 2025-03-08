@@ -267,6 +267,7 @@ const char variableNames[][0x20] = {
     "Screen.XSize",
     "Screen.YSize",
     "PlayerListPos",
+    "Player.Rotate",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -607,6 +608,7 @@ enum ScrVariable {
     VAR_SCREENXSIZE,
     VAR_SCREENYSIZE,
     VAR_PLAYERLISTPOS,
+    VAR_PLAYERROTATE,
     VAR_MAX_CNT,
 };
 
@@ -2172,6 +2174,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
                     case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
                     case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
+                    case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3819,6 +3822,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_SCREENXSIZE: break;
                     case VAR_SCREENYSIZE: break;
                     case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
+                    case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

@@ -113,6 +113,7 @@ struct Player {
     byte runningSpeed;
     byte walkingSpeed;
     byte jumpingSpeed;
+    int rotate;
 };
 
 struct PlayerScript {

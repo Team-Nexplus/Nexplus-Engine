@@ -127,21 +127,23 @@ void ProcessPlayerAnimationChange(Player *player) {
 }
 
 void DrawPlayer(Player *player, SpriteFrame *frame) {
-    int rotation = 0;
-    switch (player->animation) {
-        case ANI_RUNNING:
-        case ANI_WALKING:
-        case ANI_PEELOUT:
-        case ANI_CORKSCREW:
-            if (player->rotation >= 0x80)
-                rotation = 0x200 - ((266 - player->rotation) >> 5 << 6);
-            else
-                rotation = (player->rotation + 10) >> 5 << 6;
-            break;
-        default: break;
-    }
+//    switch (player->animation) {
+//        case ANI_RUNNING:
+//        case ANI_WALKING:
+//        case ANI_PEELOUT:
+//        case ANI_CORKSCREW:
+//            if (player->rotation >= 0x80) {
+//                player->rotate = 0x200 - ((266 - player->rotation) >> 5 << 6);
+//                }
+//            else {
+//                player->rotate = (player->rotation + 10) >> 5 << 6;
+//                }
+//			player->rotate = player->rotation * 2;
+//            break;
+//        default: break;
+//    }
     DrawRotatedSprite(player->direction, player->screenXPos, player->screenYPos, -frame->pivotX, -frame->pivotY, frame->sprX, frame->sprY,
-                      frame->width, frame->height, rotation, frame->sheetID);
+                      frame->width, frame->height, player->rotate, frame->sheetID);
 }
 
 void ProcessPlayerControl(Player *Player) {
