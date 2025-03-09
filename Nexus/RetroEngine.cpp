@@ -235,7 +235,19 @@ void RetroEngine::Init() {
     if (LoadGameConfig("Data/Game/GameConfig.bin")) {
         if (InitRenderDevice()) {
             if (InitSoundDevice()) {
-                InitSystemMenu();
+                ClearGraphicsData();
+				for (int i = 0; i < PLAYER_COUNT; ++i) PlayerScriptList[i].scriptPath[0] = 0;
+				LoadPalette("Data/Palettes/MasterPalette.act", 0, 256);
+				LoadPlayerFromList(0, 0);
+				Engine.GameMode = ENGINE_MAINGAME;
+				StageMode       = STAGEMODE_LOAD;
+#if !RETRO_USE_ORIGINAL_CODE
+				ActiveStageList   = Engine.startList_Game == 0xFF ? 0 : Engine.startList_Game;
+				StageListPosition = Engine.startStage_Game == 0xFF ? 0 : Engine.startStage_Game;
+#else
+				ActiveStageList   = 0;
+				StageListPosition = 0;
+#endif
                 ClearScriptData();
                 initialised = true;
                 GameRunning     = true;
