@@ -2,9 +2,9 @@
 
 Player PlayerList[PLAYER_COUNT];
 PlayerScript PlayerScriptList[PLAYER_COUNT];
-int PlayerNo          = 0;
-int activePlayerCount = 1;
-int PlayerListPos     = 0;
+int PlayerNo                 = 0;
+int activePlayerCount        = 1;
+int PlayerListPos            = 0;
 
 ushort DelayUp           = 0;
 ushort DelayDown         = 0;
@@ -116,9 +116,9 @@ void LoadPlayerFromList(byte characterID, byte playerID) {
 
 void ProcessPlayerAnimationChange(Player *player) {
     if (player->animation != player->prevAnimation) {
-        if (player->animation == ANI_JUMPING)
+        if (player->jumpHitboxOffset == 1)
             player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-        if (player->prevAnimation == ANI_JUMPING)
+        else
             player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
         player->prevAnimation  = player->animation;
         player->frame          = 0;
@@ -585,9 +585,9 @@ void ProcessPlayerAnimation(Player *player) {
     else
         player->animationTimer += script->animations[player->animation].speed;
     if (player->animation != player->prevAnimation) {
-        if (player->animation == ANI_JUMPING)
+        if (player->jumpHitboxOffset == 1)
             player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-        if (player->prevAnimation == ANI_JUMPING)
+        else
             player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
         player->prevAnimation  = player->animation;
         player->frame          = 0;

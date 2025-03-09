@@ -112,7 +112,8 @@ void LoadConfigListText(TextMenu *menu, int listNo)
             strBuf[strLen] = 0;
 
             if (listNo == 0) // Player List
-                AddTextMenuEntry(menu, strBuf);
+				AddTextMenuEntry(menu, strBuf);
+//				return p;
         }
 
         // Categories
@@ -140,6 +141,7 @@ void LoadConfigListText(TextMenu *menu, int listNo)
                 if (listNo == c) {
                     AddTextMenuEntry(menu, strBuf);
                     menu->entryHighlight[menu->rowCount - 1] = fileBuffer;
+//                	return s;
                 }
             }
         }

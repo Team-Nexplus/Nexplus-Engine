@@ -114,6 +114,7 @@ struct Player {
     byte walkingSpeed;
     byte jumpingSpeed;
     int rotate;
+    int jumpHitboxOffset;
 };
 
 struct PlayerScript {
