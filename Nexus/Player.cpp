@@ -116,10 +116,17 @@ void LoadPlayerFromList(byte characterID, byte playerID) {
 
 void ProcessPlayerAnimationChange(Player *player) {
     if (player->animation != player->prevAnimation) {
-        if (player->jumpHitboxOffset == 1)
-            player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-        else
-            player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+			if (player->jumpHitboxOffset == 1)
+				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+			else
+				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		} else {
+			if (player->animation == ANI_JUMPING)
+				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+			if (player->prevAnimation == ANI_JUMPING)
+				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		}
         player->prevAnimation  = player->animation;
         player->frame          = 0;
         player->animationTimer = 0;
@@ -127,21 +134,24 @@ void ProcessPlayerAnimationChange(Player *player) {
 }
 
 void DrawPlayer(Player *player, SpriteFrame *frame) {
-//    switch (player->animation) {
-//        case ANI_RUNNING:
-//        case ANI_WALKING:
-//        case ANI_PEELOUT:
-//        case ANI_CORKSCREW:
-//            if (player->rotation >= 0x80) {
-//                player->rotate = 0x200 - ((266 - player->rotation) >> 5 << 6);
-//                }
-//            else {
-//                player->rotate = (player->rotation + 10) >> 5 << 6;
-//                }
-//			player->rotate = player->rotation * 2;
-//            break;
-//        default: break;
-//    }
+	if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		player->rotate = 0;
+		switch (player->animation) {
+		    case ANI_RUNNING:
+		    case ANI_WALKING:
+		    case ANI_PEELOUT:
+		    case ANI_CORKSCREW:
+		        if (player->rotation >= 0x80) {
+		            player->rotate = 0x200 - ((266 - player->rotation) >> 5 << 6);
+		            }
+		        else {
+		            player->rotate = (player->rotation + 10) >> 5 << 6;
+		            }
+				player->rotate = player->rotation * 2;
+		        break;
+		    default: break;
+		}
+	}
     DrawRotatedSprite(player->direction, player->screenXPos, player->screenYPos, -frame->pivotX, -frame->pivotY, frame->sprX, frame->sprY,
                       frame->width, frame->height, player->rotate, frame->sheetID);
 }
@@ -585,10 +595,17 @@ void ProcessPlayerAnimation(Player *player) {
     else
         player->animationTimer += script->animations[player->animation].speed;
     if (player->animation != player->prevAnimation) {
-        if (player->jumpHitboxOffset == 1)
-            player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-        else
-            player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+			if (player->jumpHitboxOffset == 1)
+				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+			else
+				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		} else {
+			if (player->animation == ANI_JUMPING)
+				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+			if (player->prevAnimation == ANI_JUMPING)
+				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		}
         player->prevAnimation  = player->animation;
         player->frame          = 0;
         player->animationTimer = 0;
