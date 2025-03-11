@@ -269,6 +269,9 @@ const char variableNames[][0x20] = {
     "PlayerListPos",
     "Player.Rotate",
     "Player.JumpHitboxOffset",
+    "Player.AnimationSpeedMode",
+    "Player.AnimationSpeedCap",
+    "Player.AnimationSpeedOffset",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -611,6 +614,9 @@ enum ScrVariable {
     VAR_PLAYERLISTPOS,
     VAR_PLAYERROTATE,
     VAR_PLAYERJUMPHITBOXOFFSET,
+    VAR_ANIMSPEEDMODE,
+    VAR_ANIMSPEEDCAP,
+    VAR_ANIMSPEEDOFFSET,
     VAR_MAX_CNT,
 };
 
@@ -2178,6 +2184,9 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
                     case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].jumpHitboxOffset; break;
+                    case VAR_ANIMSPEEDMODE: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedMode; break;
+                    case VAR_ANIMSPEEDCAP: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedCap; break;
+                    case VAR_ANIMSPEEDOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedOffset; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3147,12 +3156,9 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				}
                 break;
             }
-			case FUNC_LOADCONFIGLISTTEXT: {
+			case FUNC_LOADCONFIGLISTTEXT: {  // Menu (Menu1/Menu2), Menu List (int), Returned Value (int), Return Value? (bool)
 				opcodeSize = 0;
-//				if (ScriptEng.operands[3] == 1)
-//					ScriptEng.operands[2] = LoadConfigListText(&GameMenu[ScriptEng.operands[0]], ScriptEng.operands[1]);
-//				else
-					LoadConfigListText(&GameMenu[ScriptEng.operands[0]], ScriptEng.operands[1]);
+				LoadConfigListText(&GameMenu[ScriptEng.operands[0]], ScriptEng.operands[1]);
 				break;
 			}
 		}
@@ -3830,6 +3836,9 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
                     case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: PlayerList[PlayerNo].jumpHitboxOffset = ScriptEng.operands[i]; break;
+                    case VAR_ANIMSPEEDMODE: PlayerList[PlayerNo].animSpeedMode = ScriptEng.operands[i]; break;
+                    case VAR_ANIMSPEEDCAP: PlayerList[PlayerNo].animSpeedCap = ScriptEng.operands[i]; break;
+                    case VAR_ANIMSPEEDOFFSET: PlayerList[PlayerNo].animSpeedOffset = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

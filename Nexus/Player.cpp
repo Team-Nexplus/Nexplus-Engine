@@ -116,7 +116,7 @@ void LoadPlayerFromList(byte characterID, byte playerID) {
 
 void ProcessPlayerAnimationChange(Player *player) {
     if (player->animation != player->prevAnimation) {
-		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		if (GetGlobalVariableByName("GAME_NEXPLUS")) {
 			if (player->jumpHitboxOffset == 1)
 				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
 			else
@@ -569,26 +569,39 @@ void ProcessDebugMode(Player *player) {
 void ProcessPlayerAnimation(Player *player) {
     PlayerScript *script = &PlayerScriptList[player->type];
     if (!player->gravity) {
-        int speed = (player->jumpingSpeed * abs(player->speed) / 6 >> 16) + 48;
-        if (speed > 0xF0)
-            speed = 0xF0;
-        script->animations[ANI_JUMPING].speed = speed;
+		int speed = (player->jumpingSpeed * abs(player->speed) / 6 >> 16) + 48;
+		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		    if (speed > 0xF0)
+		        speed = 0xF0;
+		    script->animations[ANI_JUMPING].speed = speed;
+		}
 
-        switch (player->animation) {
-            case ANI_WALKING: script->animations[player->animation].speed = ((uint)(player->walkingSpeed * abs(player->speed) / 6) >> 16) + 20; break;
-            case ANI_RUNNING:
-                speed = player->runningSpeed * abs(player->speed) / 6 >> 16;
-                if (speed > 0xF0)
-                    speed = 0xF0;
-                script->animations[player->animation].speed = speed;
-                break;
-            case ANI_PEELOUT:
-                speed = player->runningSpeed * abs(player->speed) / 6 >> 16;
-                if (speed > 0xF0)
-                    speed = 0xF0;
-                script->animations[player->animation].speed = speed;
-                break;
-        }
+		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		    switch (player->animation) {
+		        case ANI_WALKING: script->animations[player->animation].speed = ((uint)(player->walkingSpeed * abs(player->speed) / 6) >> 16) + 20; break;
+		        case ANI_RUNNING:
+		            speed = player->runningSpeed * abs(player->speed) / 6 >> 16;
+		            if (speed > 0xF0)
+		                speed = 0xF0;
+		            script->animations[player->animation].speed = speed;
+		            break;
+		        case ANI_PEELOUT:
+		            speed = player->runningSpeed * abs(player->speed) / 6 >> 16;
+		            if (speed > 0xF0)
+		                speed = 0xF0;
+		            script->animations[player->animation].speed = speed;
+		            break;
+		    }
+		} else {
+			if (player->animSpeedMode != 0) {
+		            speed = (player->animSpeedMode * abs(player->speed) / 6 >> 16) + player->animSpeedOffset;
+		            if (player->animSpeedCap != 0) {
+				        if (speed > player->animSpeedCap)
+				            speed = player->animSpeedCap;
+				    }
+		            script->animations[player->animation].speed = speed;
+		    }
+		}
     }
     if (player->animationSpeed)
         player->animationTimer += player->animationSpeed;
