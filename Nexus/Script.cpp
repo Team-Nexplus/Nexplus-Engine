@@ -369,7 +369,8 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                                    FunctionInfo("PlayStageSfx", 2),
                                    FunctionInfo("StopStageSfx", 1),
                                    FunctionInfo("DrawPlayerAni", 8), // Nexplus additions start here
-                                   FunctionInfo("LoadConfigListText", 2), };
+                                   FunctionInfo("LoadConfigListText", 2),
+                                   FunctionInfo("LoadPlayerFromList", 2), };
 
 AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -717,6 +718,7 @@ enum ScrFunction {
     FUNC_STOPSTAGESFX,
     FUNC_DRAWPLAYERANI, // Nexplus additions start here
     FUNC_LOADCONFIGLISTTEXT,
+    FUNC_LOADPLAYERFROMLIST,
     FUNC_MAX_CNT
 };
 
@@ -3159,6 +3161,11 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 			case FUNC_LOADCONFIGLISTTEXT: {  // Menu (Menu1/Menu2), Menu List (int), Returned Value (int), Return Value? (bool)
 				opcodeSize = 0;
 				LoadConfigListText(&GameMenu[ScriptEng.operands[0]], ScriptEng.operands[1]);
+				break;
+			}
+			case FUNC_LOADPLAYERFROMLIST: {  // characterID (int),  playerID (int)
+				opcodeSize = 0;
+				LoadPlayerFromList(ScriptEng.operands[0], ScriptEng.operands[1]);
 				break;
 			}
 		}

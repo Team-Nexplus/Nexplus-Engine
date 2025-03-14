@@ -40,6 +40,8 @@ void LoadPlayerFromList(byte characterID, byte playerID) {
     byte count      = 0;
     byte strLen     = 0;
     if (LoadFile("Data/Game/GameConfig.bin", &info)) {
+		PlayerListPos = characterID;
+
         // Name
         FileRead(&strLen, 1);
         FileRead(&strBuf, strLen);
