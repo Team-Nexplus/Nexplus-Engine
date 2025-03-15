@@ -118,15 +118,15 @@ void LoadPlayerFromList(byte characterID, byte playerID) {
 
 void ProcessPlayerAnimationChange(Player *player) {
     if (player->animation != player->prevAnimation) {
-		if (GetGlobalVariableByName("GAME_NEXPLUS")) {
-			if (player->jumpHitboxOffset == 1)
-				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-			else
-				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
-		} else {
+		if (!GetGlobalVariableByName("GAME_NEXPLUS") || GetGlobalVariableByName("GAME_NEXPLUS") == 0) {
 			if (player->animation == ANI_JUMPING)
 				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
 			if (player->prevAnimation == ANI_JUMPING)
+				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+		} else {
+			if (player->jumpHitboxOffset == 1)
+				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
+			else
 				player->YPos -= (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
 		}
         player->prevAnimation  = player->animation;
@@ -136,7 +136,7 @@ void ProcessPlayerAnimationChange(Player *player) {
 }
 
 void DrawPlayer(Player *player, SpriteFrame *frame) {
-	if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+	if (!GetGlobalVariableByName("GAME_NEXPLUS") || GetGlobalVariableByName("GAME_NEXPLUS") == 0) {
 		player->rotate = 0;
 		switch (player->animation) {
 		    case ANI_RUNNING:
@@ -572,13 +572,13 @@ void ProcessPlayerAnimation(Player *player) {
     PlayerScript *script = &PlayerScriptList[player->type];
     if (!player->gravity) {
 		int speed = (player->jumpingSpeed * abs(player->speed) / 6 >> 16) + 48;
-		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		if (!GetGlobalVariableByName("GAME_NEXPLUS") || GetGlobalVariableByName("GAME_NEXPLUS") == 0) {
 		    if (speed > 0xF0)
 		        speed = 0xF0;
 		    script->animations[ANI_JUMPING].speed = speed;
 		}
 
-		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		if (!GetGlobalVariableByName("GAME_NEXPLUS") || GetGlobalVariableByName("GAME_NEXPLUS") == 0) {
 		    switch (player->animation) {
 		        case ANI_WALKING: script->animations[player->animation].speed = ((uint)(player->walkingSpeed * abs(player->speed) / 6) >> 16) + 20; break;
 		        case ANI_RUNNING:
@@ -610,7 +610,7 @@ void ProcessPlayerAnimation(Player *player) {
     else
         player->animationTimer += script->animations[player->animation].speed;
     if (player->animation != player->prevAnimation) {
-		if (!GetGlobalVariableByName("GAME_NEXPLUS")) {
+		if (!GetGlobalVariableByName("GAME_NEXPLUS") || GetGlobalVariableByName("GAME_NEXPLUS") == 0) {
 			if (player->jumpHitboxOffset == 1)
 				player->YPos += (PlayerCBoxes[0].bottom[0] - PlayerCBoxes[1].bottom[0]) << 16;
 			else
