@@ -371,7 +371,9 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 									FunctionInfo("DrawPlayerAni", 8), // Nexplus additions start here
 									FunctionInfo("LoadConfigListText", 2),
 									FunctionInfo("LoadPlayerFromList", 2),
-									FunctionInfo("SetPaletteEntry", 4), };
+									FunctionInfo("SetPaletteEntryRGB", 4),
+									FunctionInfo("SetPaletteEntry", 2),
+									FunctionInfo("LoadPlayerAnimation", 2), };
 
 AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -720,7 +722,9 @@ enum ScrFunction {
     FUNC_DRAWPLAYERANI, // Nexplus additions start here
     FUNC_LOADCONFIGLISTTEXT,
     FUNC_LOADPLAYERFROMLIST,
+    FUNC_SETPALETTEENTRYRGB,
     FUNC_SETPALETTEENTRY,
+    FUNC_LOADPLAYERANIMATION,
     FUNC_MAX_CNT
 };
 
@@ -3170,7 +3174,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				LoadPlayerFromList(ScriptEng.operands[0], ScriptEng.operands[1]);
 				break;
 			}
-			case FUNC_SETPALETTEENTRY: SetPaletteEntry(ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+			case FUNC_SETPALETTEENTRYRGB: SetPaletteEntry(ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+			case FUNC_SETPALETTEENTRY:
+				SetPaletteEntry(ScriptEng.operands[0], (byte)(ScriptEng.operands[1] >> 16), (byte)(ScriptEng.operands[1] >> 8), (byte)(ScriptEng.operands[1] >> 0)); break;
+			case FUNC_LOADPLAYERANIMATION: LoadPlayerAnimation(ScriptText, ScriptEng.operands[1]); break;
 		}
 
         // Set Values
