@@ -269,9 +269,6 @@ const char variableNames[][0x20] = {
     "PlayerListPos",
     "Player.Rotate",
     "Player.JumpHitboxOffset",
-    "Player.AnimationSpeedMode",
-    "Player.AnimationSpeedCap",
-    "Player.AnimationSpeedOffset",
 };
 
 const FunctionInfo functions[] = {  FunctionInfo("End", 0),
@@ -373,7 +370,10 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 									FunctionInfo("LoadPlayerFromList", 2),
 									FunctionInfo("SetPaletteEntryRGB", 4),
 									FunctionInfo("SetPaletteEntry", 2),
-									FunctionInfo("LoadPlayerAnimation", 2), };
+									FunctionInfo("LoadPlayerAnimation", 2),
+//									FunctionInfo("SetAnimationSpeed", 2),
+									FunctionInfo("uint", 1),
+									FunctionInfo("abs", 1), };
 
 AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -618,9 +618,6 @@ enum ScrVariable {
     VAR_PLAYERLISTPOS,
     VAR_PLAYERROTATE,
     VAR_PLAYERJUMPHITBOXOFFSET,
-    VAR_ANIMSPEEDMODE,
-    VAR_ANIMSPEEDCAP,
-    VAR_ANIMSPEEDOFFSET,
     VAR_MAX_CNT,
 };
 
@@ -725,6 +722,9 @@ enum ScrFunction {
     FUNC_SETPALETTEENTRYRGB,
     FUNC_SETPALETTEENTRY,
     FUNC_LOADPLAYERANIMATION,
+//    FUNC_SETANIMATIONSPEED,
+    FUNC_UINT,
+    FUNC_ABS,
     FUNC_MAX_CNT
 };
 
@@ -2192,9 +2192,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
                     case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].jumpHitboxOffset; break;
-                    case VAR_ANIMSPEEDMODE: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedMode; break;
-                    case VAR_ANIMSPEEDCAP: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedCap; break;
-                    case VAR_ANIMSPEEDOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].animSpeedOffset; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3045,96 +3042,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 StopSfx(NoGlobalSFX + ScriptEng.operands[0]);
                 break;
             case FUNC_DRAWPLAYERANI: {
-            // Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int), 
-            // Ani File (int, Optional), PlayerID (int, Optional), Load Ani? (bool)
+            // Animation (int), Frame (int), X Pos (int), Y Pos (int), Sprite/Screen/Stage Pos (int), PlayerID (int, Optional)
                 opcodeSize            = 0;
 
-                if (ScriptEng.operands[7] == 1) {
-		            if (ScriptText != "") {
-		            	if (ScriptEng.operands[6] == 0) {
-							LoadPlayerAnimation(ScriptText, 0);
-		            	} else {
-		            		--ScriptEng.operands[6];
-		            	    FileInfo info;
-							char strBuf[0x100];
-							byte fileBuffer = 0;
-							byte count      = 0;
-							byte strLen     = 0;
-							if (LoadFile("Data/Game/GameConfig.bin", &info)) {
-								// Name
-								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen);
-								strBuf[strLen] = 0;
-
-								// 'Data'
-								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen);
-								strBuf[strLen] = 0;
-
-								// About
-								FileRead(&strLen, 1);
-								FileRead(&strBuf, strLen);
-								strBuf[strLen] = 0;
-
-								// Script Paths
-								FileRead(&count, 1);
-								for (int s = 0; s < count; ++s) {
-									FileRead(&strLen, 1);
-									FileRead(&strBuf, strLen);
-									strBuf[strLen] = 0;
-								}
-
-								// Variables
-								FileRead(&count, 1);
-								for (int v = 0; v < count; ++v) {
-									// Var Name
-									FileRead(&strLen, 1);
-									FileRead(&strBuf, strLen);
-									strBuf[strLen] = 0;
-
-									// Var Value
-									FileRead(&fileBuffer, 1);
-									FileRead(&fileBuffer, 1);
-									FileRead(&fileBuffer, 1);
-									FileRead(&fileBuffer, 1);
-								}
-
-								// SFX
-								FileRead(&count, 1);
-								for (int s = 0; s < count; ++s) {
-									FileRead(&strLen, 1);
-									FileRead(&strBuf, strLen);
-									strBuf[strLen] = 0;
-								}
-
-								// Players
-								FileRead(&count, 1);
-								for (int p = 0; p < count; ++p) {
-									FileRead(&strLen, 1);
-									FileRead(&strBuf, strLen); // player anim file
-									strBuf[strLen] = '\0';
-
-									FileRead(&strLen, 1);
-									FileRead(&PlayerScriptList[p].scriptPath, strLen); // player script file
-									PlayerScriptList[p].scriptPath[strLen] = '\0';
-
-									if (ScriptEng.operands[5] == p) {
-										GetFileInfo(&info);
-										CloseFile();
-										LoadPlayerAnimation(strBuf, ScriptEng.operands[6]);
-										SetFileInfo(&info);
-									}
-									FileRead(&strLen, 1);
-									FileRead(&strBuf, strLen); // player name
-									strBuf[strLen] = '\0';
-								}
-								CloseFile();
-							}
-						}
-					}
-				}
-
-                SpriteAnimation *anim = &PlayerScriptList[PlayerList[0].type].animations[ScriptEng.operands[0]];
+                SpriteAnimation *anim = &PlayerScriptList[PlayerList[ScriptEng.operands[5]].type].animations[ScriptEng.operands[0]];
 
                 if (ScriptEng.operands[4] == 0) { // Sprite Pos
                 DrawSprite(
@@ -3177,7 +3088,91 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 			case FUNC_SETPALETTEENTRYRGB: SetPaletteEntry(ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
 			case FUNC_SETPALETTEENTRY:
 				SetPaletteEntry(ScriptEng.operands[0], (byte)(ScriptEng.operands[1] >> 16), (byte)(ScriptEng.operands[1] >> 8), (byte)(ScriptEng.operands[1] >> 0)); break;
-			case FUNC_LOADPLAYERANIMATION: LoadPlayerAnimation(ScriptText, ScriptEng.operands[1]); break;
+			case FUNC_LOADPLAYERANIMATION: {
+	            if (ScriptText != "") {
+					LoadPlayerAnimation(ScriptText, ScriptEng.operands[1]);
+            	} else {
+            	    FileInfo info;
+					char strBuf[0x100];
+					byte fileBuffer = 0;
+					byte count      = 0;
+					byte strLen     = 0;
+					if (LoadFile("Data/Game/GameConfig.bin", &info)) {
+						// Name
+						FileRead(&strLen, 1);
+						FileRead(&strBuf, strLen);
+						strBuf[strLen] = 0;
+
+						// 'Data'
+						FileRead(&strLen, 1);
+						FileRead(&strBuf, strLen);
+						strBuf[strLen] = 0;
+
+						// About
+						FileRead(&strLen, 1);
+						FileRead(&strBuf, strLen);
+						strBuf[strLen] = 0;
+
+						// Script Paths
+						FileRead(&count, 1);
+						for (int s = 0; s < count; ++s) {
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+						}
+
+						// Variables
+						FileRead(&count, 1);
+						for (int v = 0; v < count; ++v) {
+							// Var Name
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+
+							// Var Value
+							FileRead(&fileBuffer, 1);
+							FileRead(&fileBuffer, 1);
+							FileRead(&fileBuffer, 1);
+							FileRead(&fileBuffer, 1);
+						}
+
+						// SFX
+						FileRead(&count, 1);
+						for (int s = 0; s < count; ++s) {
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen);
+							strBuf[strLen] = 0;
+						}
+
+						// Players
+						FileRead(&count, 1);
+						for (int p = 0; p < count; ++p) {
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen); // player anim file
+							strBuf[strLen] = '\0';
+
+							FileRead(&strLen, 1);
+							FileRead(&PlayerScriptList[p].scriptPath, strLen); // player script file
+							PlayerScriptList[p].scriptPath[strLen] = '\0';
+
+							if (ScriptEng.operands[2] == p) {
+								GetFileInfo(&info);
+								CloseFile();
+								LoadPlayerAnimation(strBuf, ScriptEng.operands[1]);
+								SetFileInfo(&info);
+							}
+							FileRead(&strLen, 1);
+							FileRead(&strBuf, strLen); // player name
+							strBuf[strLen] = '\0';
+						}
+						CloseFile();
+					}
+				}
+				break;
+			}
+//			case FUNC_SETANIMATIONSPEED: PlayerScriptList[PlayerList[PlayerNo].type].animations[ScriptEng.operands[0]].speed = ScriptEng.operands[1]; break;
+			case FUNC_UINT: ScriptEng.operands[0] = (uint)(ScriptEng.operands[0]); break;
+			case FUNC_ABS: ScriptEng.operands[0] = abs(ScriptEng.operands[0]); break;
 		}
 
         // Set Values
@@ -3853,9 +3848,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
                     case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: PlayerList[PlayerNo].jumpHitboxOffset = ScriptEng.operands[i]; break;
-                    case VAR_ANIMSPEEDMODE: PlayerList[PlayerNo].animSpeedMode = ScriptEng.operands[i]; break;
-                    case VAR_ANIMSPEEDCAP: PlayerList[PlayerNo].animSpeedCap = ScriptEng.operands[i]; break;
-                    case VAR_ANIMSPEEDOFFSET: PlayerList[PlayerNo].animSpeedOffset = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

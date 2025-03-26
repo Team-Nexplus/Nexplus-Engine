@@ -25,6 +25,8 @@ struct GFXSurface {
 
 extern int SCREEN_XSIZE;
 extern int SCREEN_CENTERX;
+extern int SCREEN_YSIZE;
+extern int SCREEN_CENTERY;
 
 extern byte BlendLookupTable[0x100 * 0x100];
 

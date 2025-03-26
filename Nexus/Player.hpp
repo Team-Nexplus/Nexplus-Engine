@@ -115,9 +115,6 @@ struct Player {
     byte jumpingSpeed;
     int rotate;
     int jumpHitboxOffset;
-    int animSpeedMode;
-    int animSpeedCap;
-    int animSpeedOffset;
 };
 
 struct PlayerScript {

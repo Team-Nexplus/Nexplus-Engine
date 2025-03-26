@@ -594,15 +594,6 @@ void ProcessPlayerAnimation(Player *player) {
 		            script->animations[player->animation].speed = speed;
 		            break;
 		    }
-		} else {
-			if (player->animSpeedMode != 0) {
-		            speed = (player->animSpeedMode * abs(player->speed) / 6 >> 16) + player->animSpeedOffset;
-		            if (player->animSpeedCap != 0) {
-				        if (speed > player->animSpeedCap)
-				            speed = player->animSpeedCap;
-				    }
-		            script->animations[player->animation].speed = speed;
-		    }
 		}
     }
     if (player->animationSpeed)

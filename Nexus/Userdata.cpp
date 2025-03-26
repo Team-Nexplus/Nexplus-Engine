@@ -45,6 +45,7 @@ void InitUserdata()
         ini.SetBool("Window", "EnhancedScaling", Engine.enhancedScaling = true);
         ini.SetInteger("Window", "WindowScale", Engine.windowScale = 2);
         ini.SetInteger("Window", "ScreenWidth", SCREEN_XSIZE = DEFAULT_SCREEN_XSIZE);
+        ini.SetInteger("Window", "ScreenHight", SCREEN_YSIZE = DEFAULT_SCREEN_YSIZE);
         ini.SetInteger("Window", "RefreshRate", Engine.refreshRate = 60);
         ini.SetInteger("Window", "ColourMode", Engine.ColourMode = 0);
 
@@ -171,6 +172,8 @@ void InitUserdata()
             Engine.windowScale = 2;
         if (!ini.GetInteger("Window", "ScreenWidth", &SCREEN_XSIZE))
             SCREEN_XSIZE = DEFAULT_SCREEN_XSIZE;
+        if (!ini.GetInteger("Window", "ScreenHight", &SCREEN_YSIZE))
+            SCREEN_YSIZE = DEFAULT_SCREEN_YSIZE;
         if (!ini.GetInteger("Window", "RefreshRate", &Engine.refreshRate))
             Engine.refreshRate = 60;
         int cm = Engine.ColourMode;
@@ -373,6 +376,8 @@ void WriteSettings() {
     ini.SetInteger("Window", "WindowScale", Engine.windowScale);
     ini.SetComment("Window", "SWComment", "How wide the base screen will be in pixels");
     ini.SetInteger("Window", "ScreenWidth", SCREEN_XSIZE);
+    ini.SetComment("Window", "SHComment", "How high the base screen will be in pixels");
+    ini.SetInteger("Window", "ScreenHight", SCREEN_YSIZE);
     ini.SetComment("Window", "RRComment", "Determines the target FPS");
     ini.SetInteger("Window", "RefreshRate", Engine.refreshRate);
     ini.SetComment("Window", "CMComment", "Determines the output colour mode (0 = 8-bit, 1 = 16-bit, 2 = 32-bit)");

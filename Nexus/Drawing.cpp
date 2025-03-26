@@ -3,6 +3,8 @@
 
 int SCREEN_XSIZE   = 320;
 int SCREEN_CENTERX = (SCREEN_XSIZE / 2);
+int SCREEN_YSIZE   = 240;
+int SCREEN_CENTERY = (SCREEN_YSIZE / 2);
 
 byte BlendLookupTable[0x100 * 0x100];
 
@@ -343,6 +345,8 @@ void ClearScreen(byte index)
 void SetScreenSize(int width, int lineSize) {
     SCREEN_XSIZE        = width;
     SCREEN_CENTERX      = (width / 2);
+    SCREEN_YSIZE        = lineSize;
+    SCREEN_CENTERY      = (lineSize / 2);
     SCREEN_SCROLL_LEFT  = SCREEN_CENTERX - 8;
     SCREEN_SCROLL_RIGHT = SCREEN_CENTERX + 8;
     OBJECT_BORDER_X2    = width + 0x80;

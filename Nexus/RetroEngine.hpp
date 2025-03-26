@@ -81,12 +81,14 @@ typedef unsigned int uint;
 #if RETRO_PLATFORM == RETRO_UWP
 #define BASE_PATH            ""
 #define DEFAULT_SCREEN_XSIZE 320
+#define DEFAULT_SCREEN_YSIZE 240
 #define DEFAULT_FULLSCREEN   false
 #else
 #define BASE_PATH ""
 #define RETRO_USING_MOUSE
 #define RETRO_USING_TOUCH
 #define DEFAULT_SCREEN_XSIZE 320
+#define DEFAULT_SCREEN_YSIZE 240
 #define DEFAULT_FULLSCREEN   false
 #endif
 
@@ -106,8 +108,6 @@ enum RetroStates {
 };
 
 // General Defines
-#define SCREEN_YSIZE   (240)
-#define SCREEN_CENTERY (SCREEN_YSIZE / 2)
 
 #if RETRO_PLATFORM == RETRO_WIN || RETRO_PLATFORM == RETRO_UWP
 #if RETRO_USING_SDL2
