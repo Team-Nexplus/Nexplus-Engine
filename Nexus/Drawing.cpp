@@ -5,6 +5,7 @@ int SCREEN_XSIZE   = 320;
 int SCREEN_CENTERX = (SCREEN_XSIZE / 2);
 int SCREEN_YSIZE   = 240;
 int SCREEN_CENTERY = (SCREEN_YSIZE / 2);
+int viewOffsetX = 0;
 
 byte BlendLookupTable[0x100 * 0x100];
 
@@ -18,6 +19,7 @@ DrawListEntry ObjectDrawOrderList[DRAWLAYER_COUNT];
 int GfxDataPosition;
 GFXSurface GfxSurface[SURFACE_MAX];
 byte GraphicData[GFXDATA_MAX];
+
 
 int InitRenderDevice() {
     char gameTitle[0x40];
@@ -36,6 +38,7 @@ int InitRenderDevice() {
     SDL_SetHint(SDL_HINT_WINRT_HANDLE_BACK_BUTTON, "1");
 
     byte flags      = 0;
+    viewOffsetX     = 0;
     Engine.window   = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
                                        SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
     Engine.renderer = SDL_CreateRenderer(Engine.window, -1, SDL_RENDERER_ACCELERATED);

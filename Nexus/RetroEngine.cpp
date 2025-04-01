@@ -45,6 +45,59 @@ bool processEvents() {
             case SDL_CONTROLLERDEVICEREMOVED: controllerClose(Engine.sdlEvents.cdevice.which); break;
             case SDL_APP_TERMINATING: Engine.GameMode = ENGINE_EXITGAME; break;
 #endif
+
+#if defined(RETRO_USING_MOUSE) && RETRO_USING_SDL2
+            case SDL_MOUSEMOTION:
+                if (touches <= 1) { // Touch always takes priority over mouse
+                    uint state = SDL_GetMouseState(&touchX[0], &touchY[0]);
+
+                    int width = 0, height = 0;
+                    SDL_GetWindowSize(Engine.window, &width, &height);
+                    touchX[0] = ((touchX[0] - viewOffsetX) / (float)width) * SCREEN_XSIZE;
+                    touchY[0] = (touchY[0] / (float)height) * SCREEN_YSIZE;
+
+                    touchDown[0] = state & SDL_BUTTON_LMASK;
+                    if (touchDown[0])
+                        touches = 1;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (touches <= 1) { // Touch always takes priority over mouse
+                    switch (Engine.sdlEvents.button.button) {
+                        case SDL_BUTTON_LEFT: touchDown[0] = true; break;
+                    }
+                    touches = 1;
+                }
+                break;
+            case SDL_MOUSEBUTTONUP:
+                if (touches <= 1) { // Touch always takes priority over mouse
+                    switch (Engine.sdlEvents.button.button) {
+                        case SDL_BUTTON_LEFT: touchDown[0] = false; break;
+                    }
+                    touches = 0;
+                }
+                break;
+#endif
+
+#if RETRO_USING_SDL2 && defined(RETRO_USING_TOUCH)
+            case SDL_FINGERMOTION:
+            case SDL_FINGERDOWN:
+            case SDL_FINGERUP: {
+                int count = SDL_GetNumTouchFingers(Engine.sdlEvents.tfinger.touchId);
+                touches   = 0;
+                for (int i = 0; i < count; i++) {
+                    SDL_Finger *finger = SDL_GetTouchFinger(Engine.sdlEvents.tfinger.touchId, i);
+                    if (finger) {
+                        touchDown[touches] = true;
+                        touchX[touches]    = finger->x * SCREEN_XSIZE;
+                        touchY[touches]    = finger->y * SCREEN_YSIZE;
+                        touches++;
+                    }
+                }
+                break;
+            }
+#endif
+
             case SDL_KEYDOWN:
                 switch (Engine.sdlEvents.key.keysym.sym) {
                     default: break;

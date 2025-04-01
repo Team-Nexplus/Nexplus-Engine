@@ -381,6 +381,7 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 									FunctionInfo("LoadTextFile", 3),
 									FunctionInfo("StrToInt", 2),
 									FunctionInfo("GetNativeStr", 2),
+									FunctionInfo("CheckTouchRect", 4),
 };
 
 AliasInfo aliases[0x160] = {
@@ -736,6 +737,7 @@ enum ScrFunction {
     FUNC_LOADTEXTFILE,
     FUNC_STRINGTOINT,
     FUNC_GETNATIVESTR,
+    FUNC_CHECKTOUCHRECT,
     FUNC_MAX_CNT
 };
 
@@ -3263,6 +3265,17 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				else if 	(ScriptText == "abc"); 				ScriptEng.operands[0] = ConvertStrToInt("ABC"); {
 				}
 			}
+            case FUNC_CHECKTOUCHRECT: opcodeSize = 0; ScriptEng.checkResult = -1;
+//#if !RETRO_USE_ORIGINAL_CODE
+//                AddDebugHitbox(H_TYPE_FINGER, NULL, ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]);
+//#endif
+                for (int f = 0; f < touches; ++f) {
+                    if (touchDown[f] && touchX[f] > ScriptEng.operands[0] && touchX[f] < ScriptEng.operands[2] && touchY[f] > ScriptEng.operands[1]
+                        && touchY[f] < ScriptEng.operands[3]) {
+                        ScriptEng.checkResult = f;
+                    }
+                }
+                break;
 		}
 
         // Set Values

@@ -41,6 +41,8 @@ extern int GfxDataPosition;
 extern GFXSurface GfxSurface[SURFACE_MAX];
 extern byte GraphicData[GFXDATA_MAX];
 
+extern int viewOffsetX;
+
 int InitRenderDevice();
 void FlipScreen();
 void ReleaseRenderDevice();

@@ -8,6 +8,12 @@ InputData GKeyDown  = InputData();
 
 bool anyPress = false;
 
+int touchDown[8];
+int touchX[8];
+int touchY[8];
+int touchID[8];
+int touches = 0;
+
 #if !RETRO_USE_ORIGINAL_CODE
 #include <algorithm>
 #include <vector>
@@ -261,22 +267,26 @@ void ReadInputDevice() {
     else if (inputType == 1)
         inputDevice[INPUT_ANY].setReleased();
 
-    int mx = 0, my = 0;
-    SDL_GetMouseState(&mx, &my);
+#ifdef RETRO_USING_MOUSE
+    if (touches <= 0) {
+		int mx = 0, my = 0;
+		SDL_GetMouseState(&mx, &my);
 
-    if ((mx == lastMouseX && my == lastMouseY)) {
-        ++mouseHideTimer;
-        if (mouseHideTimer == 120) {
-            SDL_ShowCursor(false);
-        }
-    } else {
-        if (mouseHideTimer >= 120)
-            SDL_ShowCursor(true);
-        mouseHideTimer = 0;
+		if ((mx == lastMouseX && my == lastMouseY)) {
+		    ++mouseHideTimer;
+		    if (mouseHideTimer == 120) {
+		        SDL_ShowCursor(false);
+		    }
+		} else {
+		    if (mouseHideTimer >= 120)
+		        SDL_ShowCursor(true);
+		    mouseHideTimer = 0;
+		}
+
+		lastMouseX = mx;
+		lastMouseY = my;
     }
-
-    lastMouseX = mx;
-    lastMouseY = my;
+#endif //! RETRO_USING_MOUSE
 
 #elif RETRO_USING_SDL1
     if (SDL_NumJoysticks() > 0) {
@@ -360,6 +370,12 @@ void CheckKeyPress(InputData *input, byte flags) {
 	input->start = inputDevice[INPUT_START].press;
 	input->select = inputDevice[INPUT_SELECT].press;
 	anyPress = inputDevice[INPUT_ANY].press;
+    if (!anyPress) {
+        for (int t = 0; t < touches; ++t) {
+            if (touchDown[t])
+                anyPress = true;
+        }
+    }
 }
 
 void CheckKeyDown(InputData *input, byte flags) {
