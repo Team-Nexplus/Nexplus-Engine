@@ -3257,12 +3257,11 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				break;
             }
 			case FUNC_STRINGTOINT: ReplaceScriptText(1); ScriptEng.operands[0] = ConvertStrToInt(ScriptText); break;
-			case FUNC_GETNATIVESTR:
-                ReplaceScriptText(1);
-                opcodeSize = 0;
-                switch (ScriptText) {
-                case "titleCardText": ScriptEng.operands[0] = ConvertStrToInt(titleCardText); break;
-				break;
+			case FUNC_GETNATIVESTR: {
+				ReplaceScriptText(1);
+				if 			(ScriptText == "titleCardText"){; 	ScriptEng.operands[0] = ConvertStrToInt(titleCardText); }
+				else if 	(ScriptText == "abc"); 				ScriptEng.operands[0] = ConvertStrToInt("ABC"); {
+				}
 			}
 		}
 
