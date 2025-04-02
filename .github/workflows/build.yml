@@ -1,6 +1,17 @@
 name: Build RSDKv2
 on:
-  push:
+  workflow_dispatch:
+    inputs:
+      platform:
+        required: true
+        default: 'Windows (x64)'
+        description: Platform
+        type: choice
+        options:
+        - Windows (x64)
+        - Linux
+        - Windows (x86)
+        - All
     branches:
       - master
 
@@ -15,6 +26,7 @@ env:
 
 jobs:
   v2-windows:
+    if: ${{ github.event.inputs.platform == 'Windows (x86)' || github.event.inputs.platform == 'All' }}   
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -37,6 +49,7 @@ jobs:
           name: v2-windows
           path: artifacts
   v2-windows-x64:
+    if: ${{ github.event.inputs.platform == 'Windows (x64)' || github.event.inputs.platform == 'All' }}   
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -59,6 +72,7 @@ jobs:
           name: v2-windows-x64
           path: artifacts
   v2-linux:
+    if: ${{ github.event.inputs.platform == 'Linux' || github.event.inputs.platform == 'All' }}   
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
