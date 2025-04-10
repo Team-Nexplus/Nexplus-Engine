@@ -4,14 +4,18 @@ on:
     inputs:
       platform:
         required: true
-        default: 'Windows (x64)'
+        default: 'All'
         description: Platform
         type: choice
+        multiple: true
         options:
-        - Windows (x64)
-        - Linux
-        - Windows (x86)
         - All
+        - Linux
+        - Windows (x64)
+        - Windows (x86)
+    branches:
+      - master
+  push:
     branches:
       - master
 
