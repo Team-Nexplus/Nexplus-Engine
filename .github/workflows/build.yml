@@ -7,17 +7,12 @@ on:
         default: 'All'
         description: Platform
         type: choice
-        multiple: true
         options:
         - All
         - Linux
         - Windows (x64)
         - Windows (x86)
-    branches:
-      - master
   push:
-    env:
-      github.event.inputs.platform: 'All'
     branches:
       - master
 
