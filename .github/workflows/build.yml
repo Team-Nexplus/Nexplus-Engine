@@ -8,10 +8,10 @@ on:
         description: Platform
         type: choice
         options:
-          - All
-          - Linux
-          - Windows (x64)
-          - Windows (x86)
+        - All
+        - Linux
+        - Windows (x64)
+        - Windows (x86)
   push:
     branches:
       - master
@@ -24,11 +24,10 @@ env:
   WIN64_FLAGS: "-DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_PREFIX_PATH=C:/vcpkg/installed/x64-windows-static/"
   # FIXME: For some reason ubuntu enables _FORTIFY_SOURCE by default, so let's override it to prevent IO bugs
   GENERAL_LINUX_FLAGS: "-DCMAKE_CXX_FLAGS='-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0'"
-  PLATFORM: ${{ github.event.inputs.platform || 'All' }}
 
 jobs:
   v2-windows:
-    if: ${{ env.PLATFORM == 'Windows (x86)' || env.PLATFORM == 'All' }}   
+    if: ${{ github.event.inputs.platform == 'Windows (x86)' || github.event.inputs.platform == 'All' }}   
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -51,7 +50,7 @@ jobs:
           name: v2-windows
           path: artifacts
   v2-windows-x64:
-    if: ${{ env.PLATFORM == 'Windows (x64)' || env.PLATFORM == 'All' }}  
+    if: ${{ github.event.inputs.platform == 'Windows (x64)' || github.event.inputs.platform == 'All' }}   
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -74,7 +73,7 @@ jobs:
           name: v2-windows-x64
           path: artifacts
   v2-linux:
-    if: ${{ env.PLATFORM == 'Linux' || env.PLATFORM == 'All' }}   
+    if: ${{ github.event.inputs.platform == 'Linux' || github.event.inputs.platform == 'All' }}   
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
