@@ -3,6 +3,8 @@
 TextMenu GameMenu[TEXTMENU_COUNT];
 int TextMenuSurfaceNo = 0;
 
+FontCharacter fontCharacterList[FONTCHAR_COUNT];
+
 void SetupTextMenu(TextMenu *menu, int rowCount)
 {
     menu->textDataPos = 0;
@@ -143,6 +145,144 @@ void LoadConfigListText(TextMenu *menu, int listNo)
                 }
             }
         }
+        CloseFile();
+    }
+}
+
+void LoadTextFile(TextMenu *menu, const char *filePath, byte mapCode)
+{
+    char buffer[0x80];
+    StrCopy(buffer, "Data/");
+    StrAdd(buffer, filePath);
+    filePath = buffer;
+
+    bool finished = false;
+    FileInfo info;
+    byte fileBuffer = 0;
+    if (LoadFile(filePath, &info)) {
+        menu->textDataPos                = 0;
+        menu->rowCount                   = 0;
+        menu->entryStart[menu->rowCount] = menu->textDataPos;
+        menu->entrySize[menu->rowCount]  = 0;
+
+        FileRead(&fileBuffer, 1);
+        if (fileBuffer == 0xFF) {
+            FileRead(&fileBuffer, 1);
+            while (!finished) {
+                ushort character = 0;
+                FileRead(&fileBuffer, 1);
+                character = fileBuffer;
+                FileRead(&fileBuffer, 1);
+                character |= fileBuffer << 8;
+
+                if (character != '\n') {
+                    if (character == '\r') {
+                        menu->rowCount += 1;
+                        if (menu->rowCount > 511) {
+                            finished = true;
+                        }
+                        else {
+                            menu->entryStart[menu->rowCount] = menu->textDataPos;
+                            menu->entrySize[menu->rowCount]  = 0;
+                        }
+                    }
+                    else {
+                        if (mapCode) {
+                            int i = 0;
+                            while (i < 1024) {
+                                if (fontCharacterList[i].id == character) {
+                                    character = i;
+                                    i         = 1025;
+                                }
+                                else {
+                                    ++i;
+                                }
+                            }
+                            if (i == 1024) {
+                                character = 0;
+                            }
+                        }
+                        menu->textData[menu->textDataPos++] = character;
+                        menu->entrySize[menu->rowCount]++;
+                    }
+                }
+                if (!finished) {
+                    finished = ReachedEndOfFile();
+                    if (menu->textDataPos >= TEXTDATA_COUNT)
+                        finished = true;
+                }
+            }
+        }
+        else {
+            ushort character = fileBuffer;
+            if (character != '\n') {
+                if (character == '\r') {
+                    menu->rowCount++;
+                    menu->entryStart[menu->rowCount] = menu->textDataPos;
+                    menu->entrySize[menu->rowCount]  = 0;
+                }
+                else {
+                    if (mapCode) {
+                        int i = 0;
+                        while (i < 1024) {
+                            if (fontCharacterList[i].id == character) {
+                                character = i;
+                                i         = 1025;
+                            }
+                            else {
+                                ++i;
+                            }
+                        }
+                        if (i == 1024) {
+                            character = 0;
+                        }
+                    }
+                    menu->textData[menu->textDataPos++] = character;
+                    menu->entrySize[menu->rowCount]++;
+                }
+            }
+
+            while (!finished) {
+                FileRead(&fileBuffer, 1);
+                character = fileBuffer;
+                if (character != '\n') {
+                    if (character == '\r') {
+                        menu->rowCount++;
+                        if (menu->rowCount > 511) {
+                            finished = true;
+                        }
+                        else {
+                            menu->entryStart[menu->rowCount] = menu->textDataPos;
+                            menu->entrySize[menu->rowCount]  = 0;
+                        }
+                    }
+                    else {
+                        if (mapCode) {
+                            int i = 0;
+                            while (i < 1024) {
+                                if (fontCharacterList[i].id == character) {
+                                    character = i;
+                                    i         = 1025;
+                                }
+                                else {
+                                    ++i;
+                                }
+                            }
+                            if (i == 1024)
+                                character = 0;
+                        }
+                        menu->textData[menu->textDataPos++] = character;
+                        menu->entrySize[menu->rowCount]++;
+                    }
+                }
+                if (!finished) {
+                    finished = ReachedEndOfFile();
+                    if (menu->textDataPos >= TEXTDATA_COUNT)
+                        finished = true;
+                }
+            }
+        }
+        menu->rowCount++;
         CloseFile();
     }
 }

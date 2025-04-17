@@ -23,10 +23,12 @@ int JumpTableDataPos = 0;
 int JumpTableOffset  = 0;
 
 #define ALIAS_COUNT 0x100
+#define BASEALIAS_COUNT (15)
+
 #if !RETRO_USE_ORIGINAL_CODE
-#define COMMONALIAS_COUNT (23)
+#define COMMONALIAS_COUNT (BASEALIAS_COUNT * 2)
 #else
-#define COMMONALIAS_COUNT (15)
+#define COMMONALIAS_COUNT (BASEALIAS_COUNT)
 #endif
 int NO_ALIASES = 0;
 int lineID     = 0;
@@ -273,6 +275,7 @@ const char variableNames[][0x20] = {
     "PlayerListPos",
     "Player.Rotate",
     "Player.JumpHitboxOffset",
+    "Stage.DebugMode",
 };
 
 const FunctionInfo functions[] = {  FunctionInfo("End", 0),
@@ -378,10 +381,11 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 //									FunctionInfo("SetAnimationSpeed", 2),
 									FunctionInfo("uint", 1),
 									FunctionInfo("abs", 1),
-									FunctionInfo("LoadTextFile", 3),
 									FunctionInfo("StrToInt", 2),
 									FunctionInfo("GetNativeStr", 2),
 									FunctionInfo("CheckTouchRect", 4),
+									FunctionInfo("LoadTextFile", 3),
+									FunctionInfo("GetTextInfo", 5),
 };
 
 AliasInfo aliases[0x160] = {
@@ -396,6 +400,7 @@ AliasInfo aliases[0x160] = {
     AliasInfo("FLIP_Y", "2"),        AliasInfo("FLIP_XY", "3"),
 #endif
     AliasInfo("FX_FLIP", "4"),
+    AliasInfo("TEXTINFO_TEXTDATA", "0"), AliasInfo("TEXTINFO_TEXTSIZE", "1"), AliasInfo("TEXTINFO_ROWCOUNT", "2"),
 };
 
 const char scriptEvaluationTokens[][0x4] = {
@@ -627,6 +632,7 @@ enum ScrVariable {
     VAR_PLAYERLISTPOS,
     VAR_PLAYERROTATE,
     VAR_PLAYERJUMPHITBOXOFFSET,
+    VAR_STAGEDEBUGMODE,
     VAR_MAX_CNT,
 };
 
@@ -725,7 +731,8 @@ enum ScrFunction {
     FUNC_NEXTVIDEOFRAME,
     FUNC_PLAYSTAGESFX,
     FUNC_STOPSTAGESFX,
-    FUNC_DRAWPLAYERANI, // Nexplus additions start here
+// Nexplus additions start here
+    FUNC_DRAWPLAYERANI,
     FUNC_LOADCONFIGLISTTEXT,
     FUNC_LOADPLAYERFROMLIST,
     FUNC_SETPALETTEENTRYRGB,
@@ -734,10 +741,11 @@ enum ScrFunction {
 //    FUNC_SETANIMATIONSPEED,
     FUNC_UINT,
     FUNC_ABS,
-    FUNC_LOADTEXTFILE,
     FUNC_STRINGTOINT,
     FUNC_GETNATIVESTR,
     FUNC_CHECKTOUCHRECT,
+    FUNC_LOADTEXTFILE,
+    FUNC_GETTEXTINFO,
     FUNC_MAX_CNT
 };
 
@@ -2262,6 +2270,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
                     case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].jumpHitboxOffset; break;
+                    case VAR_STAGEDEBUGMODE: ScriptEng.operands[i] = debugMode; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3251,31 +3260,42 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 //			case FUNC_SETANIMATIONSPEED: PlayerScriptList[PlayerList[PlayerNo].type].animations[ScriptEng.operands[0]].speed = ScriptEng.operands[1]; break;
 			case FUNC_UINT: ScriptEng.operands[0] = (uint)(ScriptEng.operands[0]); break;
 			case FUNC_ABS: ScriptEng.operands[0] = abs(ScriptEng.operands[0]); break;
-			case FUNC_LOADTEXTFILE: {
-//				ReplaceScriptText(1);
-//				opcodeSize     = 0;
-//				TextMenu *menu = &gameMenu[scriptEng.operands[0]];
-//				LoadTextFile(menu, scriptText, scriptEng.operands[2] != 0);
-				break;
-            }
 			case FUNC_STRINGTOINT: ReplaceScriptText(1); ScriptEng.operands[0] = ConvertStrToInt(ScriptText); break;
 			case FUNC_GETNATIVESTR: {
 				ReplaceScriptText(1);
 				if 			(ScriptText == "titleCardText"){; 	ScriptEng.operands[0] = ConvertStrToInt(titleCardText); }
 				else if 	(ScriptText == "abc"); 				ScriptEng.operands[0] = ConvertStrToInt("ABC"); {
-				}
+				} break;
 			}
-            case FUNC_CHECKTOUCHRECT: opcodeSize = 0; ScriptEng.checkResult = -1;
+			case FUNC_CHECKTOUCHRECT: opcodeSize = 0; ScriptEng.checkResult = -1; {
 //#if !RETRO_USE_ORIGINAL_CODE
 //                AddDebugHitbox(H_TYPE_FINGER, NULL, ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]);
 //#endif
-                for (int f = 0; f < touches; ++f) {
-                    if (touchDown[f] && touchX[f] > ScriptEng.operands[0] && touchX[f] < ScriptEng.operands[2] && touchY[f] > ScriptEng.operands[1]
-                        && touchY[f] < ScriptEng.operands[3]) {
-                        ScriptEng.checkResult = f;
-                    }
+			for (int f = 0; f < touches; ++f) {
+				if (touchDown[f] && touchX[f] > ScriptEng.operands[0] && touchX[f] < ScriptEng.operands[2] && touchY[f] > ScriptEng.operands[1]
+					&& touchY[f] < ScriptEng.operands[3]) {
+					ScriptEng.checkResult = f;
+					}
+				} break;
+			}
+            case FUNC_LOADTEXTFILE: {
+				ReplaceScriptText(1);
+                opcodeSize     = 0;
+                TextMenu *menu = &GameMenu[ScriptEng.operands[0]];
+                LoadTextFile(menu, ScriptText, ScriptEng.operands[2] != 0);
+                break;
+            }
+            case FUNC_GETTEXTINFO: {
+                TextMenu *menu = &GameMenu[ScriptEng.operands[1]];
+                switch (ScriptEng.operands[2]) {
+                    case TEXTINFO_TEXTDATA:
+                        ScriptEng.operands[0] = menu->textData[menu->entryStart[ScriptEng.operands[3]] + ScriptEng.operands[4]];
+                        break;
+                    case TEXTINFO_TEXTSIZE: ScriptEng.operands[0] = menu->entrySize[ScriptEng.operands[3]]; break;
+                    case TEXTINFO_ROWCOUNT: ScriptEng.operands[0] = menu->rowCount; break;
                 }
                 break;
+            }
 		}
 
         // Set Values
@@ -3951,6 +3971,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
                     case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
                     case VAR_PLAYERJUMPHITBOXOFFSET: PlayerList[PlayerNo].jumpHitboxOffset = ScriptEng.operands[i]; break;
+                    case VAR_STAGEDEBUGMODE: debugMode = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;
