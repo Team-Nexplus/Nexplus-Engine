@@ -274,8 +274,9 @@ const char variableNames[][0x20] = {
     "Screen.YSize",
     "PlayerListPos",
     "Player.Rotate",
-    "Player.JumpHitboxOffset",
     "Stage.DebugMode",
+    "Player.iXPos",
+    "Player.iYPos",
 };
 
 const FunctionInfo functions[] = {  FunctionInfo("End", 0),
@@ -631,8 +632,9 @@ enum ScrVariable {
     VAR_SCREENYSIZE,
     VAR_PLAYERLISTPOS,
     VAR_PLAYERROTATE,
-    VAR_PLAYERJUMPHITBOXOFFSET,
     VAR_STAGEDEBUGMODE,
+    VAR_PLAYERIXPOS,
+    VAR_PLAYERIYPOS,
     VAR_MAX_CNT,
 };
 
@@ -2263,14 +2265,21 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         }
                         break;
                     }
-                    case VAR_SCREENCENTERX: ScriptEng.operands[i] = SCREEN_CENTERX; break;
-                    case VAR_SCREENCENTERY: ScriptEng.operands[i] = SCREEN_CENTERY; break;
-                    case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
-                    case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
-                    case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
-                    case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
-                    case VAR_PLAYERJUMPHITBOXOFFSET: ScriptEng.operands[i] = PlayerList[PlayerNo].jumpHitboxOffset; break;
-                    case VAR_STAGEDEBUGMODE: ScriptEng.operands[i] = debugMode; break;
+					case VAR_SCREENCENTERX: ScriptEng.operands[i] = SCREEN_CENTERX; break;
+					case VAR_SCREENCENTERY: ScriptEng.operands[i] = SCREEN_CENTERY; break;
+					case VAR_SCREENXSIZE: ScriptEng.operands[i] = SCREEN_XSIZE; break;
+					case VAR_SCREENYSIZE: ScriptEng.operands[i] = SCREEN_YSIZE; break;
+					case VAR_PLAYERLISTPOS: ScriptEng.operands[i] = PlayerListPos; break;
+					case VAR_PLAYERROTATE: ScriptEng.operands[i] = PlayerList[PlayerNo].rotate; break;
+					case VAR_STAGEDEBUGMODE: ScriptEng.operands[i] = debugMode; break;
+					case VAR_PLAYERIXPOS: {
+						ScriptEng.operands[i] = PlayerList[PlayerNo].XPos >> 16;
+						break;
+					}
+					case VAR_PLAYERIYPOS: {
+						ScriptEng.operands[i] = PlayerList[PlayerNo].YPos >> 16;
+						break;
+					}
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3964,14 +3973,21 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         }
                         break;
                     case VAR_OBJECTOUTOFBOUNDS: break;
-                    case VAR_SCREENCENTERX: break;
-                    case VAR_SCREENCENTERY: break;
-                    case VAR_SCREENXSIZE: break;
-                    case VAR_SCREENYSIZE: break;
-                    case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
-                    case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
-                    case VAR_PLAYERJUMPHITBOXOFFSET: PlayerList[PlayerNo].jumpHitboxOffset = ScriptEng.operands[i]; break;
-                    case VAR_STAGEDEBUGMODE: debugMode = ScriptEng.operands[i]; break;
+					case VAR_SCREENCENTERX: break;
+					case VAR_SCREENCENTERY: break;
+					case VAR_SCREENXSIZE: break;
+					case VAR_SCREENYSIZE: break;
+					case VAR_PLAYERLISTPOS: PlayerListPos = ScriptEng.operands[i]; break;
+					case VAR_PLAYERROTATE: PlayerList[PlayerNo].rotate = ScriptEng.operands[i]; break;
+					case VAR_STAGEDEBUGMODE: debugMode = ScriptEng.operands[i]; break;
+					case VAR_PLAYERIXPOS: {
+						PlayerList[PlayerNo].XPos = ScriptEng.operands[i] << 16;
+						break;
+					}
+					case VAR_PLAYERIYPOS: {
+						PlayerList[PlayerNo].YPos = ScriptEng.operands[i] << 16;
+						break;
+					}
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;
