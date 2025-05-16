@@ -267,16 +267,17 @@ const char variableNames[][0x20] = {
     "Stage.YBoundary1",
     "Stage.YBoundary2",
     "Object.OutOfBounds",
-    // More Nexplus Additions
-    "Screen.CenterX",
-    "Screen.CenterY",
-    "Screen.XSize",
-    "Screen.YSize",
-    "PlayerListPos",
-    "Player.Rotate",
-    "Stage.DebugMode",
-    "Player.iXPos",
-    "Player.iYPos",
+
+	//---Nexplus Additions---//
+	"Screen.CenterX",
+	"Screen.CenterY",
+	"Screen.XSize",
+	"Screen.YSize",
+	"PlayerListPos",
+	"Player.Rotate",
+	"Stage.DebugMode",
+	"Player.iXPos",
+	"Player.iYPos",
 };
 
 const FunctionInfo functions[] = {  FunctionInfo("End", 0),
@@ -373,7 +374,9 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 									FunctionInfo("NextVideoFrame", 0),
 									FunctionInfo("PlayStageSfx", 2),
 									FunctionInfo("StopStageSfx", 1),
-									FunctionInfo("DrawPlayerAni", 8), // Nexplus additions start here
+									
+									//---Nexplus Additions---//
+									FunctionInfo("DrawPlayerAni", 8),
 									FunctionInfo("LoadConfigListText", 2),
 									FunctionInfo("LoadPlayerFromList", 2),
 									FunctionInfo("SetPaletteEntryRGB", 4),
@@ -626,15 +629,18 @@ enum ScrVariable {
     VAR_STAGEYBOUNDARY1,
     VAR_STAGEYBOUNDARY2,
     VAR_OBJECTOUTOFBOUNDS,
-    VAR_SCREENCENTERX,
-    VAR_SCREENCENTERY,
-    VAR_SCREENXSIZE,
-    VAR_SCREENYSIZE,
-    VAR_PLAYERLISTPOS,
-    VAR_PLAYERROTATE,
-    VAR_STAGEDEBUGMODE,
-    VAR_PLAYERIXPOS,
-    VAR_PLAYERIYPOS,
+
+	//---Nexplus Additions---//
+	VAR_SCREENCENTERX,
+	VAR_SCREENCENTERY,
+	VAR_SCREENXSIZE,
+	VAR_SCREENYSIZE,
+	VAR_PLAYERLISTPOS,
+	VAR_PLAYERROTATE,
+	VAR_STAGEDEBUGMODE,
+	VAR_PLAYERIXPOS,
+	VAR_PLAYERIYPOS,
+
     VAR_MAX_CNT,
 };
 
@@ -733,21 +739,23 @@ enum ScrFunction {
     FUNC_NEXTVIDEOFRAME,
     FUNC_PLAYSTAGESFX,
     FUNC_STOPSTAGESFX,
-// Nexplus additions start here
-    FUNC_DRAWPLAYERANI,
-    FUNC_LOADCONFIGLISTTEXT,
-    FUNC_LOADPLAYERFROMLIST,
-    FUNC_SETPALETTEENTRYRGB,
-    FUNC_SETPALETTEENTRY,
-    FUNC_LOADPLAYERANIMATION,
-//    FUNC_SETANIMATIONSPEED,
-    FUNC_UINT,
-    FUNC_ABS,
-    FUNC_STRINGTOINT,
-    FUNC_GETNATIVESTR,
-    FUNC_CHECKTOUCHRECT,
-    FUNC_LOADTEXTFILE,
-    FUNC_GETTEXTINFO,
+
+	//---Nexplus Additions---//
+	FUNC_DRAWPLAYERANI,
+	FUNC_LOADCONFIGLISTTEXT,
+	FUNC_LOADPLAYERFROMLIST,
+	FUNC_SETPALETTEENTRYRGB,
+	FUNC_SETPALETTEENTRY,
+	FUNC_LOADPLAYERANIMATION,
+//	FUNC_SETANIMATIONSPEED,
+	FUNC_UINT,
+	FUNC_ABS,
+	FUNC_STRINGTOINT,
+	FUNC_GETNATIVESTR,
+	FUNC_CHECKTOUCHRECT,
+	FUNC_LOADTEXTFILE,
+	FUNC_GETTEXTINFO,
+
     FUNC_MAX_CNT
 };
 
