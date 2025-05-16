@@ -3125,8 +3125,13 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 break;
             case FUNC_OBJECTTILEGRIP:
                 opcodeSize = 0;
-                if (ScriptEng.operands[0] == CSIDE_FLOOR)
-                    ObjectFloorGrip(ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]);
+                switch (ScriptEng.operands[0]){
+		            default: break;
+		            case CSIDE_FLOOR: ObjectFloorGrip(ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+		            case CSIDE_LWALL: ObjectLWallGrip(ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+		            case CSIDE_RWALL: ObjectRWallGrip(ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+		            case CSIDE_ROOF: ObjectRoofGrip(ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
+                }
                 break;
             case FUNC_LOADVIDEO:
                 ReplaceScriptText(1);
