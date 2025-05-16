@@ -278,6 +278,7 @@ const char variableNames[][0x20] = {
 	"Stage.DebugMode",
 	"Player.iXPos",
 	"Player.iYPos",
+	"Music.LoopPoint",
 };
 
 const FunctionInfo functions[] = {  FunctionInfo("End", 0),
@@ -640,6 +641,7 @@ enum ScrVariable {
 	VAR_STAGEDEBUGMODE,
 	VAR_PLAYERIXPOS,
 	VAR_PLAYERIYPOS,
+	VAR_MUSICLOOPPOINT,
 
     VAR_MAX_CNT,
 };
@@ -2288,6 +2290,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 						ScriptEng.operands[i] = PlayerList[PlayerNo].YPos >> 16;
 						break;
 					}
+                    case VAR_MUSICLOOPPOINT: ScriptEng.operands[i] = musInfo.loopPoint; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3996,6 +3999,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 						PlayerList[PlayerNo].YPos = ScriptEng.operands[i] << 16;
 						break;
 					}
+                    case VAR_MUSICLOOPPOINT: musInfo.loopPoint = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

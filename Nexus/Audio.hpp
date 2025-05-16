@@ -33,6 +33,7 @@ struct MusicPlaybackInfo {
     Sint16 *buffer;
     FileInfo fileInfo;
     bool trackLoop;
+    uint loopPoint;
     bool loaded;
 };
 
