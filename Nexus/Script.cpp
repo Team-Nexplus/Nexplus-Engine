@@ -3630,11 +3630,11 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     case VAR_KEYPRESSBUTTONA: GKeyPress.A = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSBUTTONB: GKeyPress.B = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSBUTTONC: GKeyPress.C = ScriptEng.operands[i]; break;
-                    case VAR_KEYPRESSBUTTONX: GKeyPress.A = ScriptEng.operands[i]; break;
-                    case VAR_KEYPRESSBUTTONY: GKeyPress.B = ScriptEng.operands[i]; break;
-                    case VAR_KEYPRESSBUTTONZ: GKeyPress.C = ScriptEng.operands[i]; break;
-                    case VAR_KEYPRESSBUTTONL: GKeyPress.A = ScriptEng.operands[i]; break;
-                    case VAR_KEYPRESSBUTTONR: GKeyPress.B = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONX: GKeyPress.X = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONY: GKeyPress.Y = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONZ: GKeyPress.Z = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONL: GKeyPress.L = ScriptEng.operands[i]; break;
+                    case VAR_KEYPRESSBUTTONR: GKeyPress.R = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSSTART: GKeyPress.start = ScriptEng.operands[i]; break;
                     case VAR_KEYPRESSSELECT: GKeyPress.select = ScriptEng.operands[i]; break;
                     case VAR_MENU1SELECTION: GameMenu[0].selection1 = ScriptEng.operands[i]; break;
