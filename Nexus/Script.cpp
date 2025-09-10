@@ -278,10 +278,11 @@ const char variableNames[][0x20] = {
 	"Stage.DebugMode",
 	"Player.iXPos",
 	"Player.iYPos",
+	"SaveRAM",
 	"Music.LoopPoint",
 };
 
-const FunctionInfo functions[] = {  FunctionInfo("End", 0),
+const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("Equal", 2),
 									FunctionInfo("Add", 2),
 									FunctionInfo("Sub", 2),
@@ -391,6 +392,8 @@ const FunctionInfo functions[] = {  FunctionInfo("End", 0),
 									FunctionInfo("CheckTouchRect", 4),
 									FunctionInfo("LoadTextFile", 3),
 									FunctionInfo("GetTextInfo", 5),
+									FunctionInfo("ReadSaveRAM", 0),
+									FunctionInfo("WriteSaveRAM", 0),
 };
 
 AliasInfo aliases[0x160] = {
@@ -642,6 +645,7 @@ enum ScrVariable {
 	VAR_PLAYERIXPOS,
 	VAR_PLAYERIYPOS,
 	VAR_MUSICLOOPPOINT,
+	VAR_SAVERAM,
 
     VAR_MAX_CNT,
 };
@@ -757,6 +761,8 @@ enum ScrFunction {
 	FUNC_CHECKTOUCHRECT,
 	FUNC_LOADTEXTFILE,
 	FUNC_GETTEXTINFO,
+	FUNC_READSAVERAM,
+	FUNC_WRITESAVERAM,
 
     FUNC_MAX_CNT
 };
@@ -789,22 +795,6 @@ std::string ConvertIntToStr(int integer) {
 		ConvertedString = intstr[b] + ConvertedString;
 	}
 	return ConvertedString;
-}
-
-int ConvertStrToInt(std::string text) {
-	int ConvertedInt = 0;
-	std::string strpos;
-	std::map<std::string, int> strint = {
-	{"A", 10}, {"B", 11}, {"C", 12}, {"D", 13}, {"E", 14}, {"F", 15}, {"G", 16}, {"H", 17}, {"I", 18}, {"J", 19},
-	{"K", 20}, {"L", 21}, {"M", 22}, {"N", 23}, {"O", 24}, {"P", 25}, {"Q", 26}, {"R", 27}, {"S", 28}, {"T", 29},
-	{"U", 30}, {"V", 31}, {"W", 32}, {"X", 33}, {"Y", 34}, {"Z", 35}, {" ", 36}, {"-", 37}
-	};
-
-	for (int c = 0; c < text.length(); ++c){
-		strpos = text[c];
-		ConvertedInt = (strint[strpos]) + (ConvertedInt * 100);
-	}
-	return ConvertedInt;
 }
 
 bool ReplaceScriptText(int operand) {
@@ -2291,6 +2281,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 						break;
 					}
                     case VAR_MUSICLOOPPOINT: ScriptEng.operands[i] = musInfo.loopPoint; break;
+                    case VAR_SAVERAM: ScriptEng.operands[i] = saveRAM[arrayVal]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 ScriptEng.operands[i] = ScriptData[scriptDataPtr++];
@@ -3321,6 +3312,14 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 }
                 break;
             }
+			case FUNC_READSAVERAM:
+				opcodeSize            = 0;
+				ScriptEng.checkResult = ReadSaveRAMData();
+				break;
+			case FUNC_WRITESAVERAM:
+				opcodeSize            = 0;
+				ScriptEng.checkResult = WriteSaveRAMData();
+				break;
 		}
 
         // Set Values
@@ -4005,6 +4004,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 						break;
 					}
                     case VAR_MUSICLOOPPOINT: musInfo.loopPoint = ScriptEng.operands[i]; break;
+                    case VAR_SAVERAM: saveRAM[arrayVal] = ScriptEng.operands[i]; break;
                 }
             } else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
                 scriptDataPtr++;

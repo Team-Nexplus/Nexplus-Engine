@@ -1,9 +1,15 @@
 #include "RetroEngine.hpp"
 
+#if RETRO_USE_MOD_LOADER || !RETRO_USE_ORIGINAL_CODE
+char savePath[0x100];
+#endif
+
 #if RETRO_USE_MOD_LOADER
 std::vector<ModInfo> modList;
 int activeMod = -1;
 char modsPath[0x100];
+
+bool redirectSave = false;
 
 #include <filesystem>
 #include <algorithm>
@@ -35,7 +41,9 @@ fs::path ResolvePath(fs::path given) {
 }
 
 void InitMods() {
-    modList.clear();
+	modList.clear();
+	redirectSave = false;
+	sprintf(savePath, "");
 
     char modBuf[0x100];
     sprintf(modBuf, "%smods", modsPath);
@@ -88,6 +96,19 @@ void InitMods() {
             PrintLog(fe.what());
         }
     }
+    
+	sprintf(savePath, "");
+	redirectSave = false;
+    for (int m = 0; m < modList.size(); ++m) {
+        if (!modList[m].active)
+            continue;
+        if (modList[m].redirectSave) {
+            sprintf(savePath, "%s", modList[m].savePath.c_str());
+            redirectSave = true;
+        }
+    }
+
+	ReadSaveRAMData();
 }
 
 bool LoadMod(ModInfo *info, std::string modsPath, std::string folder, bool active) {
@@ -137,9 +158,17 @@ bool LoadMod(ModInfo *info, std::string modsPath, std::string folder, bool activ
         if (!StrComp(infoBuf, ""))
             info->version = infoBuf;
 
-        info->active = active;
+		info->active = active;
 
-        ScanModFolder(info);
+		ScanModFolder(info);
+
+		info->redirectSave = false;
+		modSettings.GetBool("", "RedirectSaveRAM", &info->redirectSave);
+		if (info->redirectSave) {
+			char path[0x100];
+			sprintf(path, "mods/%s/", folder.c_str());
+			info->savePath = path;
+		}
 
         return true;
     }
@@ -291,7 +320,20 @@ void RefreshEngine() {
     ReleaseGlobalSfx();
     LoadGlobalSfx();
 
-    SaveMods();
+    sprintf(savePath, "");
+    redirectSave = false;
+    for (int m = 0; m < modList.size(); ++m) {
+        if (!modList[m].active)
+            continue;
+        if (modList[m].redirectSave) {
+            sprintf(savePath, "%s", modList[m].savePath.c_str());
+            redirectSave = true;
+        }
+    }
+
+	SaveMods();
+
+	ReadSaveRAMData();
 }
 
 #endif

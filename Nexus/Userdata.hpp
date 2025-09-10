@@ -3,9 +3,14 @@
 
 #define GLOBALVAR_COUNT (0x100)
 
+#define SAVEDATA_SIZE (0x2000)
+
 extern int NO_GLOBALVARIABLES;
 extern int GlobalVariables[GLOBALVAR_COUNT];
 extern char GlobalVariableNames[GLOBALVAR_COUNT][0x20];
+
+extern char gamePath[0x100];
+extern int saveRAM[SAVEDATA_SIZE];
 
 inline int GetGlobalVariableByName(const char *name)
 {
@@ -25,6 +30,10 @@ inline void SetGlobalVariableByName(const char *name, int value)
         }
     }
 }
+
+extern bool useSGame;
+bool ReadSaveRAMData();
+bool WriteSaveRAMData();
 
 void InitUserdata();
 void WriteSettings();
