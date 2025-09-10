@@ -1,10 +1,6 @@
 #include "RetroEngine.hpp"
 #include <cmath>
 
-// Nexplus Additions
-#include <map>
-#include <string>
-
 ObjectScript ObjectScriptList[OBJECT_COUNT];
 
 int ScriptData[SCRIPTDATA_COUNT];
@@ -383,18 +379,15 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("LoadPlayerFromList", 2),
 									FunctionInfo("SetPaletteEntryRGB", 4),
 									FunctionInfo("SetPaletteEntry", 2),
-									FunctionInfo("LoadPlayerAnimation", 4),
+									FunctionInfo("LoadPlayerAnimation", 2),
 //									FunctionInfo("SetAnimationSpeed", 2),
 									FunctionInfo("uint", 1),
 									FunctionInfo("abs", 1),
-									FunctionInfo("StrToInt", 2),
-									FunctionInfo("GetNativeStr", 2),
 									FunctionInfo("CheckTouchRect", 4),
 									FunctionInfo("LoadTextFile", 3),
 									FunctionInfo("GetTextInfo", 5),
 									FunctionInfo("ReadSaveRAM", 0),
 									FunctionInfo("WriteSaveRAM", 0),
-};
 
 AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -756,8 +749,6 @@ enum ScrFunction {
 //	FUNC_SETANIMATIONSPEED,
 	FUNC_UINT,
 	FUNC_ABS,
-	FUNC_STRINGTOINT,
-	FUNC_GETNATIVESTR,
 	FUNC_CHECKTOUCHRECT,
 	FUNC_LOADTEXTFILE,
 	FUNC_GETTEXTINFO,
@@ -766,47 +757,6 @@ enum ScrFunction {
 
     FUNC_MAX_CNT
 };
-
-// Nexplus additions start here
-std::string ConvertIntToStr(int integer) {
-	std::string ConvertedString = "";
-	int number;
-	int b;
-	std::map<int, std::string> intstr = {
-	{10, "A"}, {11, "B"}, {12, "C"}, {13, "D"}, {14, "E"}, {15, "F"}, {16, "G"}, {17, "H"}, {18, "I"}, {19, "J"},
-	{20, "K"}, {21, "L"}, {22, "M"}, {23, "N"}, {24, "O"}, {25, "P"}, {26, "Q"}, {27, "R"}, {28, "S"}, {29, "T"},
-	{30, "U"}, {31, "V"}, {32, "W"}, {33, "X"}, {34, "Y"}, {35, "Z"}, {36, " "}, {37, "-"}
-	};
-
-	for (int c = 0; c < std::to_string(integer).length(); c += 2){
-
-		number = integer;
-		for (int i = 0; i < c + 1; ++i) {
-			number /= 10; // Remove the last digit
-		}
-		b = (number % 10) * 10;
-
-		number = integer;
-		for (int i = 0; i < c; ++i) {
-			number /= 10; // Remove the last digit
-		}
-		b += number % 10;
-
-		ConvertedString = intstr[b] + ConvertedString;
-	}
-	return ConvertedString;
-}
-
-bool ReplaceScriptText(int operand) {
-	if (ScriptText == "") {
-		strncpy(ScriptText, ConvertIntToStr(ScriptEng.operands[operand]).c_str(), sizeof(ScriptText) - 1);
-		ScriptText[sizeof(ScriptText) - 1] = '\0';
-		return true;
-	} else {
-		return false;
-	}
-}
-// Nexplus additions end here
 
 void CheckAliasText(char *text) {
     if (FindStringToken(text, "#alias", 1))
@@ -2502,12 +2452,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     (ScriptEng.operands[5] * (0x100 - ScriptEng.operands[6]) >> 8) + (ScriptEng.operands[6] * ScriptEng.operands[4] >> 8);
                 break;
             case FUNC_LOADSPRITESHEET:
-                ReplaceScriptText(0);
                 opcodeSize                = 0;
                 scriptInfo->spriteSheetID = AddGraphicsFile(ScriptText);
                 break;
             case FUNC_REMOVESPRITESHEET:
-                ReplaceScriptText(0);
                 opcodeSize = 0;
                 RemoveGraphicsFile(ScriptText, -1);
                 break;
@@ -2697,7 +2645,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 break;
             case FUNC_SETDEBUGICON: opcodeSize = 0; break;
             case FUNC_LOADPALETTE:
-                ReplaceScriptText(0);
                 opcodeSize = 0;
                 LoadPalette(ScriptText, ScriptEng.operands[1], ScriptEng.operands[2]);
                 break;
@@ -2881,7 +2828,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 break;
             }
             case FUNC_ADDMENUENTRY: {
-                ReplaceScriptText(1);
                 opcodeSize                           = 0;
                 TextMenu *menu                       = &GameMenu[ScriptEng.operands[0]];
                 menu->entryHighlight[menu->rowCount] = ScriptEng.operands[2];
@@ -2889,7 +2835,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 break;
             }
             case FUNC_EDITMENUENTRY: {
-                ReplaceScriptText(1);
                 opcodeSize     = 0;
                 TextMenu *menu = &GameMenu[ScriptEng.operands[0]];
                 EditTextMenuEntry(menu, ScriptText, ScriptEng.operands[2]);
@@ -3085,7 +3030,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 ProcessDefaultJumpAction(&PlayerList[PlayerNo]);
                 break;
             case FUNC_SETMUSICTRACK:
-                ReplaceScriptText(0);
                 opcodeSize = 0;
                 SetMusicTrack(ScriptText, ScriptEng.operands[1], ScriptEng.operands[2]);
                 break;
@@ -3125,7 +3069,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                 }
                 break;
             case FUNC_LOADVIDEO:
-                ReplaceScriptText(1);
                 opcodeSize = 0;
                 PauseSound();
                 scriptInfo->spriteSheetID = AddGraphicsFile(ScriptText);
@@ -3190,9 +3133,8 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 			case FUNC_SETPALETTEENTRYRGB: SetPaletteEntry(ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]); break;
 			case FUNC_SETPALETTEENTRY:
 				SetPaletteEntry(ScriptEng.operands[0], (byte)(ScriptEng.operands[1] >> 16), (byte)(ScriptEng.operands[1] >> 8), (byte)(ScriptEng.operands[1] >> 0)); break;
-			case FUNC_LOADPLAYERANIMATION: { // Ani File (str, optional), characterID (int),  playerID (int), String? (bool)
-	            if (ScriptEng.operands[3] != 0) {
-	            	ReplaceScriptText(0);
+			case FUNC_LOADPLAYERANIMATION: {
+	            if (ScriptText != "") {
 					LoadPlayerAnimation(ScriptText, ScriptEng.operands[1]);
             	} else {
             	    FileInfo info;
@@ -3276,13 +3218,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 //			case FUNC_SETANIMATIONSPEED: PlayerScriptList[PlayerList[PlayerNo].type].animations[ScriptEng.operands[0]].speed = ScriptEng.operands[1]; break;
 			case FUNC_UINT: ScriptEng.operands[0] = (uint)(ScriptEng.operands[0]); break;
 			case FUNC_ABS: ScriptEng.operands[0] = abs(ScriptEng.operands[0]); break;
-			case FUNC_STRINGTOINT: ReplaceScriptText(1); ScriptEng.operands[0] = ConvertStrToInt(ScriptText); break;
-			case FUNC_GETNATIVESTR: {
-				ReplaceScriptText(1);
-				if 			(ScriptText == "titleCardText"){; 	ScriptEng.operands[0] = ConvertStrToInt(titleCardText); }
-				else if 	(ScriptText == "abc"); 				ScriptEng.operands[0] = ConvertStrToInt("ABC"); {
-				} break;
-			}
 			case FUNC_CHECKTOUCHRECT: opcodeSize = 0; ScriptEng.checkResult = -1; {
 //#if !RETRO_USE_ORIGINAL_CODE
 //                AddDebugHitbox(H_TYPE_FINGER, NULL, ScriptEng.operands[0], ScriptEng.operands[1], ScriptEng.operands[2], ScriptEng.operands[3]);
