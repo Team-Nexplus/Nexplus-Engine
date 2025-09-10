@@ -388,6 +388,7 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("GetTextInfo", 5),
 									FunctionInfo("ReadSaveRAM", 0),
 									FunctionInfo("WriteSaveRAM", 0),
+};
 
 AliasInfo aliases[0x160] = {
     AliasInfo("true", "1"),          AliasInfo("false", "0"),       AliasInfo("FX_SCALE", "0"),
@@ -3230,7 +3231,6 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				} break;
 			}
             case FUNC_LOADTEXTFILE: {
-				ReplaceScriptText(1);
                 opcodeSize     = 0;
                 TextMenu *menu = &GameMenu[ScriptEng.operands[0]];
                 LoadTextFile(menu, ScriptText, ScriptEng.operands[2] != 0);
