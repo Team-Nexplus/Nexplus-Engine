@@ -388,6 +388,7 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("GetTextInfo", 5),
 									FunctionInfo("ReadSaveRAM", 0),
 									FunctionInfo("WriteSaveRAM", 0),
+									FunctionInfo("Print", 3),
 };
 
 AliasInfo aliases[0x160] = {
@@ -755,6 +756,7 @@ enum ScrFunction {
 	FUNC_GETTEXTINFO,
 	FUNC_READSAVERAM,
 	FUNC_WRITESAVERAM,
+	FUNC_PRINT,
 
     FUNC_MAX_CNT
 };
@@ -3255,6 +3257,23 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 				opcodeSize            = 0;
 				ScriptEng.checkResult = WriteSaveRAMData();
 				break;
+			case FUNC_PRINT: {
+				// FUNCTION PARAMS:
+				// ScriptEng.operands[0] = message (can be a regular value or a string depending on ScriptEng.operands[1])
+				// ScriptEng.operands[1] = isInt
+				// ScriptEng.operands[2] = useEndLine (WILL FIX LATER!!)
+
+//				endLine = false;
+				if (ScriptEng.operands[1])
+					PrintLog("%d", ScriptEng.operands[0]);
+				else
+					PrintLog("%s", ScriptText);
+
+//				if (ScriptEng.operands[2])
+//					PrintLog("\n");
+//				endLine = true;
+			break;
+			}
 		}
 
         // Set Values
