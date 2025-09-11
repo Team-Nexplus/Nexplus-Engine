@@ -384,7 +384,7 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("uint", 1),
 									FunctionInfo("abs", 1),
 									FunctionInfo("CheckTouchRect", 4),
-									FunctionInfo("LoadTextFile", 3),
+									FunctionInfo("LoadTextFile", 4),	//LoadTextFile(TextMenu menu, string filePath, bool mapCode, bool loadVer)
 									FunctionInfo("GetTextInfo", 5),
 									FunctionInfo("ReadSaveRAM", 0),
 									FunctionInfo("WriteSaveRAM", 0),
@@ -3232,29 +3232,29 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 					}
 				} break;
 			}
-            case FUNC_LOADTEXTFILE: {
-                opcodeSize     = 0;
-                TextMenu *menu = &GameMenu[ScriptEng.operands[0]];
-                LoadTextFile(menu, ScriptText, ScriptEng.operands[2] != 0);
-                break;
-            }
-            case FUNC_GETTEXTINFO: {
-                TextMenu *menu = &GameMenu[ScriptEng.operands[1]];
-                switch (ScriptEng.operands[2]) {
-                    case TEXTINFO_TEXTDATA:
-                        ScriptEng.operands[0] = menu->textData[menu->entryStart[ScriptEng.operands[3]] + ScriptEng.operands[4]];
-                        break;
-                    case TEXTINFO_TEXTSIZE: ScriptEng.operands[0] = menu->entrySize[ScriptEng.operands[3]]; break;
-                    case TEXTINFO_ROWCOUNT: ScriptEng.operands[0] = menu->rowCount; break;
-                }
-                break;
-            }
+			case FUNC_LOADTEXTFILE: { //LoadTextFile(TextMenu menu, string filePath, bool mapCode, bool loadVer)
+				opcodeSize = 0;
+				TextMenu *menu = &GameMenu[ScriptEng.operands[0]];
+				LoadTextFile(menu, ScriptText, ScriptEng.operands[2] != 0, ScriptEng.operands[3] != 0);
+				break;
+			}
+			case FUNC_GETTEXTINFO: {
+				TextMenu *menu = &GameMenu[ScriptEng.operands[1]];
+				switch (ScriptEng.operands[2]) {
+					case TEXTINFO_TEXTDATA:
+						ScriptEng.operands[0] = menu->textData[menu->entryStart[ScriptEng.operands[3]] + ScriptEng.operands[4]];
+						break;
+					case TEXTINFO_TEXTSIZE: ScriptEng.operands[0] = menu->entrySize[ScriptEng.operands[3]]; break;
+					case TEXTINFO_ROWCOUNT: ScriptEng.operands[0] = menu->rowCount; break;
+				}
+				break;
+			}
 			case FUNC_READSAVERAM:
-				opcodeSize            = 0;
+				opcodeSize			  = 0;
 				ScriptEng.checkResult = ReadSaveRAMData();
 				break;
 			case FUNC_WRITESAVERAM:
-				opcodeSize            = 0;
+				opcodeSize			  = 0;
 				ScriptEng.checkResult = WriteSaveRAMData();
 				break;
 			case FUNC_PRINT: {

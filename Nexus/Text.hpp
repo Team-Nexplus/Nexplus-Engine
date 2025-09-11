@@ -39,7 +39,7 @@ extern int TextMenuSurfaceNo;
 
 extern FontCharacter fontCharacterList[FONTCHAR_COUNT];
 
-void LoadTextFile(TextMenu *menu, const char *filePath, byte mapCode);
+void LoadTextFile(TextMenu *menu, const char *filePath, byte mapCode, bool loadVer);
 void LoadConfigListText(TextMenu *menu, int listNo);
 
 void SetupTextMenu(TextMenu *menu, int rowCount);
