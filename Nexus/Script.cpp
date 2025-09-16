@@ -276,6 +276,14 @@ const char variableNames[][0x20] = {
 	"Player.iYPos",
 	"SaveRAM",
 	"Music.LoopPoint",
+    "TempStr0",
+    "TempStr1",
+    "TempStr2",
+    "TempStr3",
+    "TempStr4",
+    "TempStr5",
+    "TempStr6",
+    "TempStr7",
 };
 
 const FunctionInfo functions[] = {	FunctionInfo("End", 0),
@@ -389,6 +397,8 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("ReadSaveRAM", 0),
 									FunctionInfo("WriteSaveRAM", 0),
 									FunctionInfo("Print", 3),
+									FunctionInfo("IntToStr", 3),
+									FunctionInfo("StrLength", 2),
 };
 
 AliasInfo aliases[0x160] = {
@@ -641,6 +651,14 @@ enum ScrVariable {
 	VAR_PLAYERIYPOS,
 	VAR_SAVERAM,
 	VAR_MUSICLOOPPOINT,
+    VAR_TEMPSTR0,
+    VAR_TEMPSTR1,
+    VAR_TEMPSTR2,
+    VAR_TEMPSTR3,
+    VAR_TEMPSTR4,
+    VAR_TEMPSTR5,
+    VAR_TEMPSTR6,
+    VAR_TEMPSTR7,
 
     VAR_MAX_CNT,
 };
@@ -757,6 +775,8 @@ enum ScrFunction {
 	FUNC_READSAVERAM,
 	FUNC_WRITESAVERAM,
 	FUNC_PRINT,
+	FUNC_INTTOSTR,
+	FUNC_STRLENGTH,
 
     FUNC_MAX_CNT
 };
@@ -1583,6 +1603,18 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                     default: break;
                 }
 
+                switch (ScriptData[scriptDataPtr]) {
+                    default: break;
+                    case VAR_TEMPSTR0: ScriptEng.strOperands[i] = ScriptEng.tempStr[0]; break;
+                    case VAR_TEMPSTR1: ScriptEng.strOperands[i] = ScriptEng.tempStr[1]; break;
+                    case VAR_TEMPSTR2: ScriptEng.strOperands[i] = ScriptEng.tempStr[2]; break;
+                    case VAR_TEMPSTR3: ScriptEng.strOperands[i] = ScriptEng.tempStr[3]; break;
+                    case VAR_TEMPSTR4: ScriptEng.strOperands[i] = ScriptEng.tempStr[4]; break;
+                    case VAR_TEMPSTR5: ScriptEng.strOperands[i] = ScriptEng.tempStr[5]; break;
+                    case VAR_TEMPSTR6: ScriptEng.strOperands[i] = ScriptEng.tempStr[6]; break;
+                    case VAR_TEMPSTR7: ScriptEng.strOperands[i] = ScriptEng.tempStr[7]; break;
+                }
+
                 // Variables
                 switch (ScriptData[scriptDataPtr++]) {
                     default: break;
@@ -2262,6 +2294,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                         default: break;
                     }
                 }
+                ScriptEng.strOperands[i] = ScriptText;
                 scriptDataPtr++;
             }
         }
@@ -2270,6 +2303,30 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
         Entity *entity           = &ObjectEntityList[ObjectLoop];
         Player *player           = &PlayerList[PlayerNo];
         SpriteFrame *spriteFrame = nullptr;
+
+		// Functions
+		switch (opcode) {
+			case FUNC_EQUAL: ScriptEng.strOperands[0] = ScriptEng.strOperands[1]; break; //string  = string
+			case FUNC_ADD: ScriptEng.strOperands[0] += ScriptEng.strOperands[1]; break;  //string += string
+			case FUNC_SUB: { //string -= int letterCountRemoved
+				if (StrLength(ScriptEng.strOperands[0].c_str()) > ScriptEng.operands[1] && ScriptEng.operands[1] > 0) //you cant have a negative string length!!
+					ScriptEng.strOperands[0][StrLength(ScriptEng.strOperands[0].c_str()) - ScriptEng.operands[1]] = '\0';
+				else
+					ScriptEng.strOperands[0][0] = '\0'; //Null-terminate the start of the string
+				break;
+			}
+			case FUNC_INTTOSTR: { //IntToStr(string store, int numToConvert, int conversionType)
+				switch (ScriptEng.operands[2]) {
+					default: break;
+					case 0: sprintf((char *)ScriptEng.strOperands[0].c_str(), "%d", ScriptEng.operands[1]); break; //Number
+					case 1: sprintf((char *)ScriptEng.strOperands[0].c_str(), "%x", ScriptEng.operands[1]); break; //Lowercase hex
+					case 2: sprintf((char *)ScriptEng.strOperands[0].c_str(), "%X", ScriptEng.operands[1]); break; //Uppercase HEX
+				}
+				break;
+			}
+			case FUNC_STRLENGTH: ScriptEng.operands[0] = StrLength(ScriptText); break; //StrLength(int store, string lengthOf)
+			default: break;
+		}
 
         // Functions
         switch (opcode) {
@@ -3304,6 +3361,18 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
                             arrayVal = ObjectLoop - ScriptData[scriptDataPtr++];
                         break;
                     default: break;
+                }
+
+                switch (ScriptData[scriptDataPtr]) {
+                    default: break;
+                    case VAR_TEMPSTR0: ScriptEng.tempStr[0] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR1: ScriptEng.tempStr[1] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR2: ScriptEng.tempStr[2] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR3: ScriptEng.tempStr[3] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR4: ScriptEng.tempStr[4] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR5: ScriptEng.tempStr[5] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR6: ScriptEng.tempStr[6] = ScriptEng.strOperands[i]; break;
+                    case VAR_TEMPSTR7: ScriptEng.tempStr[7] = ScriptEng.strOperands[i]; break;
                 }
 
                 // Variables

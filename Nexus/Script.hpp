@@ -1,6 +1,8 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
+#include <string>
+
 #define SCRIPTDATA_COUNT (0x40000)
 #define JUMPTABLE_COUNT  (0x4000)
 #define JUMPSTACK_COUNT (0x400)
@@ -25,6 +27,8 @@ struct ScriptEngine {
     int tempValue[8];
     int arrayPosition[3];
     int checkResult;
+    std::string strOperands[10];
+    std::string tempStr[8];
 };
 
 enum ScriptSubs { SUB_MAIN = 0, SUB_PLAYERINTERACTION = 1, SUB_DRAW = 2, SUB_SETUP = 3, SUB_PLAYERMAIN = 4, SUB_PLAYERSTATE = 5 };
