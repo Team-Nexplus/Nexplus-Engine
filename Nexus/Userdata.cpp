@@ -139,7 +139,7 @@ void InitUserdata()
         ini.SetInteger("Window", "ScreenWidth", SCREEN_XSIZE = DEFAULT_SCREEN_XSIZE);
         ini.SetInteger("Window", "ScreenHight", SCREEN_YSIZE = DEFAULT_SCREEN_YSIZE);
         ini.SetInteger("Window", "RefreshRate", Engine.refreshRate = 60);
-        ini.SetInteger("Window", "ColourMode", Engine.ColourMode = 0);
+        ini.SetInteger("Window", "ColourMode", Engine.ColourMode = 1);
 
         ini.SetFloat("Audio", "BGMVolume", bgmVolume / (float)MAX_VOLUME);
         ini.SetFloat("Audio", "SFXVolume", sfxVolume / (float)MAX_VOLUME);
@@ -451,9 +451,6 @@ void WriteSettings() {
     ini.SetInteger("Dev", "FastForwardSpeed", Engine.fastForwardSpeed);
 
     ini.SetComment("Dev", "DataFileComment", "Determines what Datafile will be loaded");
-    ini.SetString("Dev", "DataFile", Engine.dataFile);
-
-    ini.SetComment("Dev", "DataFileComment", "Determines what RSDK file will be loaded");
     ini.SetString("Dev", "DataFile", Engine.dataFile);
 
     ini.SetComment("Window", "FSComment", "Determines if the window will be fullscreen or not");
