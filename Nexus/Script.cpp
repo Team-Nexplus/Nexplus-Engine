@@ -3,12 +3,17 @@
 
 ObjectScript ObjectScriptList[OBJECT_COUNT];
 
+ScriptFunction ScriptFunctionList[FUNCTION_COUNT];
+int ScriptFunctionCount = 0;
+
 int ScriptData[SCRIPTDATA_COUNT];
 int JumpTableData[JUMPTABLE_COUNT];
 int JumpTableStack[JUMPSTACK_COUNT];
+int FunctionStack[FUNCSTACK_COUNT];
 
 int JumpTablePos      = 0;
 int JumpTableStackPos = 0;
+int FunctionStackPos  = 0;
 
 ScriptEngine ScriptEng = ScriptEngine();
 char ScriptText[0x100];
@@ -399,6 +404,8 @@ const FunctionInfo functions[] = {	FunctionInfo("End", 0),
 									FunctionInfo("Print", 3),
 									FunctionInfo("IntToStr", 3),
 									FunctionInfo("StrLength", 2),
+									FunctionInfo("CallFunction", 1),
+									FunctionInfo("EndFunction", 0),
 };
 
 AliasInfo aliases[0x160] = {
@@ -777,6 +784,8 @@ enum ScrFunction {
 	FUNC_PRINT,
 	FUNC_INTTOSTR,
 	FUNC_STRLENGTH,
+	FUNC_CALLFUNCTION,
+	FUNC_ENDFUNCTION,
 
     FUNC_MAX_CNT
 };
@@ -1011,6 +1020,14 @@ void ConvertFunctionText(char *text) {
                     StrCopy(funcName, "Global");
                     strBuffer[0] = 0;
                     AppendIntegerToString(strBuffer, v);
+                }
+            }
+
+            // Eg: TempValue0 = Function1
+            for (int f = 0; f < ScriptFunctionCount; ++f) {
+                if (StrComp(funcName, ScriptFunctionList[f].name)) {
+                    funcName[0] = 0;
+                    AppendIntegerToString(funcName, f);
                 }
             }
             if (ConvertStringToInteger(funcName, &value)) {
@@ -1457,6 +1474,55 @@ void ParseScriptFile(char *scriptName, int scriptID) {
                             parseMode = PARSEMODE_SCOPELESS;
                         }
                     }
+                    if (FindStringToken(ScriptText, "function", 1) == 0) { // regular decl.
+                        char funcName[0x20];
+                        for (textPos = 8; ScriptText[textPos]; ++textPos) funcName[textPos - 8] = ScriptText[textPos];
+                        funcName[textPos - 8] = 0;
+
+                        int funcID = -1;
+                        for (int f = 0; f < ScriptFunctionCount; ++f) {
+                            if (StrComp(funcName, ScriptFunctionList[f].name))
+                                funcID = f;
+                        }
+
+                        if (funcID <= -1) {
+                            if (ScriptFunctionCount >= FUNCTION_COUNT) {
+                                parseMode = PARSEMODE_SCOPELESS;
+                            } else {
+                                StrCopy(ScriptFunctionList[ScriptFunctionCount].name, funcName);
+                                ScriptFunctionList[ScriptFunctionCount].ptr.scriptCodePtr = ScriptDataPos;
+                                ScriptFunctionList[ScriptFunctionCount].ptr.jumpTablePtr  = JumpTablePos;
+                                scriptDataOffset                                          = ScriptDataPos;
+                                JumpTableOffset                                           = JumpTablePos;
+                                parseMode                                                 = PARSEMODE_FUNCTION;
+                                ++ScriptFunctionCount;
+                            }
+                        } else {
+                            StrCopy(ScriptFunctionList[funcID].name, funcName);
+                            ScriptFunctionList[funcID].ptr.scriptCodePtr = ScriptDataPos;
+                            ScriptFunctionList[funcID].ptr.jumpTablePtr  = JumpTablePos;
+                            scriptDataOffset                             = ScriptDataPos;
+                            JumpTableOffset                              = JumpTablePos;
+                            parseMode                                    = PARSEMODE_FUNCTION;
+                        }
+                    }
+                    else if (FindStringToken(ScriptText, "function", 1) == 1) { // forward decl.
+                        char funcName[0x20];
+                        for (textPos = 9; ScriptText[textPos]; ++textPos) funcName[textPos - 9] = ScriptText[textPos];
+                        funcName[textPos - 9] = 0;
+
+                        int funcID = -1;
+                        for (int f = 0; f < ScriptFunctionCount; ++f) {
+                            if (StrComp(funcName, ScriptFunctionList[f].name))
+                                funcID = f;
+                        }
+
+                        if (ScriptFunctionCount < FUNCTION_COUNT && funcID == -1) {
+                            StrCopy(ScriptFunctionList[ScriptFunctionCount++].name, funcName);
+                        }
+
+                        parseMode = PARSEMODE_SCOPELESS;
+                    }
                     break;
                 case PARSEMODE_PLATFORMSKIP:
                     ++lineID;
@@ -1468,6 +1534,9 @@ void ParseScriptFile(char *scriptName, int scriptID) {
                     if (ScriptText[0]) {
                         if (StrComp(ScriptText, "endsub")) {
                             ScriptData[ScriptDataPos++] = FUNC_END;
+                            parseMode                   = PARSEMODE_SCOPELESS;
+                        } else if (StrComp(ScriptText, "endfunction")) {
+                            ScriptData[ScriptDataPos++] = FUNC_ENDFUNCTION;
                             parseMode                   = PARSEMODE_SCOPELESS;
                         } else {
                             ConvertIfWhileStatement(ScriptText);
@@ -1532,6 +1601,7 @@ void ClearScriptData() {
 
     JumpTablePos      = 0;
     JumpTableStackPos = 0;
+    FunctionStackPos  = 0;
 
     ScriptDataPos    = 0;
     scriptDataOffset = 0;
@@ -1569,6 +1639,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
     bool running      = true;
     int scriptDataPtr = scriptCodePtr;
     JumpTableStackPos = 0;
+    FunctionStackPos  = 0;
     while (running) {
         int opcode           = ScriptData[scriptDataPtr++];
         int opcodeSize       = functions[opcode].opcodeSize;
@@ -3329,8 +3400,24 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub) {
 //				if (ScriptEng.operands[2])
 //					PrintLog("\n");
 //				endLine = true;
-			break;
+				break;
 			}
+			case FUNC_CALLFUNCTION: {
+				opcodeSize                        = 0;
+				FunctionStack[FunctionStackPos++] = scriptCodePtr;
+				FunctionStack[FunctionStackPos++] = jumpTablePtr;
+				FunctionStack[FunctionStackPos++] = scriptCodePtr;
+				scriptCodePtr                     = ScriptFunctionList[ScriptEng.operands[0]].ptr.scriptCodePtr;
+				jumpTablePtr                      = ScriptFunctionList[ScriptEng.operands[0]].ptr.jumpTablePtr;
+				scriptCodePtr                     = scriptCodePtr;
+				break;
+			}
+			case FUNC_ENDFUNCTION:
+				opcodeSize      = 0;
+				scriptCodePtr   = FunctionStack[--FunctionStackPos];
+				jumpTablePtr    = FunctionStack[--FunctionStackPos];
+				scriptCodePtr   = FunctionStack[--FunctionStackPos];
+				break;
 		}
 
         // Set Values

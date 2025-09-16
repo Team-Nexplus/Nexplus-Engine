@@ -5,11 +5,19 @@
 
 #define SCRIPTDATA_COUNT (0x40000)
 #define JUMPTABLE_COUNT  (0x4000)
+#define FUNCTION_COUNT   (0x200)
+
 #define JUMPSTACK_COUNT (0x400)
+#define FUNCSTACK_COUNT (0x400)
 
 struct ScriptPtr {
     int scriptCodePtr;
     int jumpTablePtr;
+};
+
+struct ScriptFunction {
+    char name[0x20];
+    ScriptPtr ptr;
 };
 
 struct ObjectScript {
@@ -35,12 +43,17 @@ enum ScriptSubs { SUB_MAIN = 0, SUB_PLAYERINTERACTION = 1, SUB_DRAW = 2, SUB_SET
 
 extern ObjectScript ObjectScriptList[OBJECT_COUNT];
 
+extern ScriptFunction ScriptFunctionList[FUNCTION_COUNT];
+extern int ScriptFunctionCount;
+
 extern int ScriptData[SCRIPTDATA_COUNT];
 extern int JumpTableData[JUMPTABLE_COUNT];
 
 extern int JumpTableStack[JUMPSTACK_COUNT];
+extern int FunctionStack[FUNCSTACK_COUNT];
 
 extern int JumpTableStackPos;
+extern int functionStackPos;
 
 extern ScriptEngine ScriptEng;
 extern char ScriptText[0x100];
